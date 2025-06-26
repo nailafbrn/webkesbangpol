@@ -1,0 +1,110 @@
+.card {
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.btn {
+    border-radius: 8px;
+}
+
+.table thead th {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.03em;
+}
+
+.table td, .table th {
+    vertical-align: middle;
+    padding: 1rem 0.75rem;
+}
+
+.btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+    transition: all 0.3s ease-in-out;
+}
+
+.table thead tr{
+    font-family: 'Raleway', sans-serif;
+    color: #B40D14;
+    font-weight: 700;
+}
+
+.table tbody tr{
+    font-family: 'DM Sans', sans-serif;
+}
+
+.pagination .page-link {
+    border: none;
+    margin: 0 4px;
+    color: #B40D14;
+    background-color: #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+.pagination .page-link:hover {
+    background-color: #B40D14;
+    color: #fff;
+}
+
+.pagination .active .page-link {
+    background-color: #B40D14;
+    color: #fff;
+    box-shadow: 0 0 8px rgba(180,13,20,0.4);
+}
+
+.btn-tambah-konten {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 1.5rem;
+    font-size: 0.875rem;
+    border-radius: 50rem;
+    border: 1px solid #B40D14;
+    color: #B40D14;
+    background-color: transparent;
+    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, 0.075);
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+    margin-bottom: 2rem;
+    font-family: 'Mulish', sans-serif;
+    font-weight: 700;
+
+}
+
+.btn-tambah-konten:hover {
+    background-color: #B40D14;
+    color: white;
+    text-decoration: none;
+}
+
+
+.table td, .table th {
+    vertical-align: middle;
+    padding: 0.75rem 0.75rem;
+    white-space: normal; /* mencegah teks turun ke bawah */
+    text-align: center;
+}
+
+.table td:nth-child(3) {
+    white-space: normal; /* biarkan konten teks panjang bisa turun baris */
+    text-align: left;
+}
+
+.action-btn {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border-radius: 6px;
+}
+

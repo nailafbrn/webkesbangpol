@@ -1,0 +1,129 @@
+
+.card {
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: none;
+    background-color: #ffffff;
+    transition: all 0.3s ease-in-out;
+}
+.card:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+.card-body {
+    padding: 1.5rem;
+}
+
+/* Table Styling */
+.table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 0.95rem;
+}
+
+.table th,
+.table td {
+    vertical-align: top;
+    padding: 1rem 0.75rem;
+    border: 1px solid #eaeaea;
+    word-break: break-word;
+}
+
+.table thead {
+    background-color: #f9f9f9;
+}
+
+.table thead th {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    /* color: #444; */
+    letter-spacing: 0.03em;
+}
+
+.table-bordered {
+    border: 1px solid #dee2e6;
+}
+
+/* Button Styling */
+.btn {
+    border-radius: 6px;
+    font-size: 0.875rem;
+    padding: 0.375rem 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+/* Add Button */
+.btn.bg-gradient-secondary {
+    color: #fff;
+    background-color: #6c757d;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+/* Pagination */
+.pagination {
+    margin-top: 1.5rem;
+    justify-content: center;
+}
+
+.pagination .page-link {
+    color: #0d6efd;
+    border: none;
+    background-color: transparent;
+    font-weight: 500;
+}
+
+.pagination .active .page-link {
+    background-color: #0d6efd;
+    color: #fff;
+    border-radius: 6px;
+    box-shadow: 0 0 4px rgba(13, 110, 253, 0.3);
+}
+
+/* Bungkus tabel agar bisa scroll horizontal */
+.table-responsive {
+    overflow-x: auto;
+}
+
+/* Lebar minimum agar isi paragraf tetap terbaca */
+.table td:nth-child(1),
+.table td:nth-child(2),
+.table td:nth-child(3),
+.table td:nth-child(4),
+.table td:nth-child(5) {
+    min-width: 300px;
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+/* Kolom aksi dibuat sempit */
+.table td:last-child,
+.table th:last-child {
+    width: 100px;
+    white-space: nowrap;
+}
+
+/* Tombol aksi biar lebih rapat dan rapi */
+.table .btn {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+}

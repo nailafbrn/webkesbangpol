@@ -1,0 +1,42 @@
+.program-table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+/* Kolom Produk Hukum */
+.kolom-produk {
+    width: 15%;
+    word-break: break-word;
+}
+
+/* Kolom Nomor */
+.kolom-nomor {
+    width: 10%;
+    word-break: break-word;
+}
+
+/* Kolom Tahun */
+.kolom-tahun {
+    width: 8%;
+    word-break: break-word;
+}
+
+/* Kolom Tentang */
+.kolom-tentang {
+    width: 30%;
+    word-break: break-word;
+}
+
+/* Kolom Bidang */
+.kolom-bidang {
+    width: 20%;
+    word-break: break-word;
+}
+
+/* Kolom Aksi */
+.kolom-aksi {
+    width: 60px !important;
+    white-space: nowrap;
+    padding-left: 0;
+    padding-right: 0;
+}

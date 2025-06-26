@@ -1,0 +1,23 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+.main-wrapper {
+    margin-left: 250px;
+    transition: margin-left 0.3s;
+    height: 100%; 
+    overflow: hidden; 
+}
+
+.main-wrapper.expanded {
+    margin-left: 80px;
+}
+
+.dashboard-content {
+    padding-top: 70px;
+    min-height: calc(100vh - 70px);
+    background-color: #f8f9fa;
+    overflow-y: auto;
+}

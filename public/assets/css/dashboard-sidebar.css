@@ -1,0 +1,160 @@
+/* Sidebar */
+.dashboard-sidebar {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #B40D14;
+    overflow-y: auto;
+    transition: width 0.3s;
+    z-index: 1000;
+    font-family: 'Roboto', sans-serif; 
+}
+
+/* Sidebar yang ter-collapsed */
+.dashboard-sidebar.collapsed {
+    width: 80px;
+}
+
+/* Branding logo sidebar */
+.dashboard-sidebar-brand {
+    color: white;
+    text-decoration: none;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: none;
+}
+.dashboard-sidebar-brand:hover {
+    background-color: transparent; 
+    color: white; 
+}
+/* Judul sidebar akan tersembunyi pada mode collapsed */
+.sidebar-title {
+    transition: opacity 0.3s;
+}
+
+/* Menyembunyikan teks saat sidebar dalam keadaan collapsed */
+.dashboard-sidebar.collapsed .sidebar-title,
+.dashboard-sidebar.collapsed .sidebar-text,
+.dashboard-sidebar.collapsed .sidebar-heading {
+    display: none;
+}
+
+/* Styling untuk menu */
+.dashboard-sidebar-menu .nav-link {
+    color: #E1E1E1;
+    padding: 10px 20px;
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    transition: background 0.2s, color 0.2s;
+    font-size: 1rem;
+}
+
+/* Ikon menu */
+.dashboard-sidebar-menu .nav-link i {
+    width: 20px;
+    text-align: center;
+    color: #D6D6D6;
+}
+
+/* Efek hover pada menu */
+.dashboard-sidebar-menu .nav-link:hover {
+    background-color: #FF6F61; 
+    color: white;
+}
+
+.dashboard-sidebar-menu .nav-link i:hover {
+    color: #fff;
+}
+
+/* Heading sidebar */
+.sidebar-heading {
+    font-size: 0.75rem;
+    color: #E1E1E1;  /* Warna untuk heading menu */
+    text-transform: uppercase;
+    margin-left: 1.25rem;
+    margin-top: 0.5rem;
+}
+
+.sidebar-divider {
+    border: 0;
+    border-top: 2px solid #ffffff;
+    margin: 0 1rem;
+    opacity: 0.3; /* opsional, bisa diatur sesuai selera */
+}
+
+.dashboard-sidebar-menu .nav-link.active {
+    background-color: #fff;
+    color: #B40D14;
+}
+
+.dashboard-sidebar-menu .nav-link.active i {
+    color: #B40D14;
+}
+
+/* Dropdown styling */
+.sidebar-dropdown-toggle {
+    cursor: pointer;
+    position: relative;
+    font-weight: 500;
+}
+
+.sidebar-dropdown-toggle .fa-angle-down {
+    transition: transform 0.3s;
+}
+
+.sidebar-dropdown-toggle[aria-expanded="true"] .fa-angle-down {
+    transform: rotate(180deg);
+}
+
+.sidebar-submenu {
+    padding-left: 1rem;
+}
+
+.sidebar-submenu .nav-link {
+    padding: 8px 15px 8px 28px;
+    font-size: 0.95rem;
+    position: relative;
+}
+
+.sidebar-submenu .nav-link i {
+    font-size: 0.9rem;
+}
+
+/* Animation for the dropdown */
+.collapse {
+    transition: all 0.3s ease;
+}
+
+/* Add hover effect to dropdown toggle */
+.nav-link.sidebar-dropdown-toggle:hover {
+    background-color: rgba(255, 111, 97, 0.8);
+}
+
+/* When collapsed, properly show dropdown items */
+.dashboard-sidebar.collapsed .sidebar-dropdown-toggle .fa-angle-down {
+    display: none;
+}
+
+.dashboard-sidebar.collapsed .collapse {
+    position: absolute;
+    left: 80px;
+    top: 0;
+    width: 200px;
+    background-color: #B40D14;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 0 4px 4px 0;
+}
+
+.dashboard-sidebar.collapsed .sidebar-submenu .nav-link {
+    padding-left: 20px;
+}
+
+/* Add open state to collapsed sidebar dropdown */
+.dashboard-sidebar.collapsed .nav-item:hover > .collapse {
+    display: block;
+}

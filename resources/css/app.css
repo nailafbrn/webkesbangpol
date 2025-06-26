@@ -1,0 +1,61 @@
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+@import "@fontsource/poppins";
+@import "@fontsource/inter";
+@import "@fontsource/montserrat";
+@import "@fontsource/open-sans";
+@import "@fontsource/roboto";
+@import "@fontsource/nunito";
+@import "@fontsource/lato";
+@import "@fontsource/raleway";
+@import "@fontsource/merriweather";
+@import '@fontsource/abril-fatface';
+@import '@fontsource/alegreya';
+@import '@fontsource/alegreya-sans';
+@import '@fontsource/amatic-sc';
+@import '@fontsource/anton';
+@import '@fontsource/archivo';
+@import '@fontsource/bebas-neue';
+@import '@fontsource/cabin';
+@import '@fontsource/cairo';
+@import '@fontsource/caveat';
+@import '@fontsource/commissioner';
+@import '@fontsource/dancing-script';
+@import '@fontsource/dm-sans';
+@import '@fontsource/dm-serif-display';
+@import '@fontsource/dm-serif-text';
+@import '@fontsource/fira-sans';
+@import '@fontsource/great-vibes';
+@import '@fontsource/heebo';
+@import '@fontsource/ibm-plex-sans';
+@import '@fontsource/josefin-sans';
+@import '@fontsource/karla';
+@import '@fontsource/lexend';
+@import '@fontsource/lobster';
+@import '@fontsource/lora';
+@import '@fontsource/mulish';
+@import '@fontsource/oswald';
+@import '@fontsource/pacifico';
+@import '@fontsource/pt-sans';
+@import '@fontsource/quicksand';
+@import '@fontsource/rubik';
+@import '@fontsource/roboto-condensed';
+@import '@fontsource/roboto-slab';
+@import '@fontsource/shadows-into-light';
+@import '@fontsource/source-sans-pro';
+@import '@fontsource/space-grotesk';
+@import '@fontsource/titillium-web';
+@import '@fontsource/ubuntu';
+@import '@fontsource/work-sans';
+@import "@fontsource/archivo";
+@import "@fontsource/playfair-display";
+@import 'animate.css/animate.min.css';
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+@import './style.css';
+@import './home.css';
+@import './landingpage-profile.css';
+
+
+html {
+    scroll-behavior: smooth;
+}

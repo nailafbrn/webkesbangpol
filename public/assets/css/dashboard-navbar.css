@@ -1,0 +1,201 @@
+/* Navbar utama */
+.dashboard-navbar {
+    font-family: 'Roboto', sans-serif;
+    height: 60px;
+    background-color: #B40D14;
+    color: #1e1e2d;
+    padding: 0.5rem 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 1050;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease-in-out;
+}
+
+/* Tombol-tombol dalam navbar */
+.dashboard-navbar .btn,
+.dashboard-navbar .form-control,
+.dashboard-navbar .dashboard-user-btn {
+    color: #D6D6D6;
+    background-color: #B40D14;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    border: none;
+    padding: 0.4rem 0.75rem;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Hover efek tombol */
+.dashboard-navbar .btn:hover,
+.dashboard-navbar .dashboard-user-btn:hover,
+.dashboard-user-menu .dropdown-item:hover {
+    background-color: #FF6F61;
+    /* font-weight: bold; */
+    color: #fff;
+}
+
+/* Judul Navbar */
+.dashboard-navbar .dashboard-navbar-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+/* Dropdown User Container */
+.dashboard-user-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Tombol profil user */
+.dashboard-user-btn i {
+    color: #D6D6D6;
+    margin-right: 0.4rem;
+    font-size: 1.2rem;
+}
+
+/* Menu dropdown */
+.dashboard-user-menu {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    margin-top: 1rem;
+    min-width: 180px;
+    padding: 0.25rem 0;
+    background-color: #B40D14;
+    border: 1px solid #FF6F61;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    font-family: 'Roboto', sans-serif;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.25s ease;
+    z-index: 1000;
+}
+
+/* Munculkan dropdown saat hover */
+.dashboard-user-dropdown:hover .dashboard-user-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    color: #B40D14;
+}
+
+/* Item dalam dropdown */
+.dashboard-user-menu .dropdown-item {
+    color: #D6D6D6;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    border: none;
+    width: 100%;
+    text-align: left;
+}
+
+/* Icon dalam item */
+.dashboard-user-menu .dropdown-item i {
+    margin-right: 0.5rem;
+    color: #D6D6D6;
+}
+
+.dashboard-user-menu {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+
+/* Container search bar */
+.navbar-search {
+    display: flex;
+    align-items: center;
+    border-radius: 6px;
+    overflow: hidden;
+    width: 55px; /* Hanya cukup untuk icon */
+    transition: width 0.3s ease, box-shadow 0.3s ease;
+    background-color: transparent; /* Tidak ada background awal */
+}
+
+.navbar-search.expanded {
+    width: 250px; /* Saat aktif, lebar meningkat */
+    box-shadow: 0 0 0 0.15rem rgba(180, 13, 20, 0.15);
+    border-radius: 50px 0 0 50px;
+}
+
+/* Input search */
+.dashboard-navbar-search-input {
+    flex: 1;
+    background-color: transparent;
+    color: #D6D6D6;
+    border: none;
+    padding: 0.6rem 0.5rem;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    display: none;
+}
+
+.navbar-search.expanded .dashboard-navbar-search-input {
+    display: block;
+}
+
+.dashboard-navbar-search-input::placeholder {
+    color: #D6D6D6;
+    font-weight: 500;
+    font-family: 'Roboto', sans-serif;
+}
+
+.dashboard-navbar-search-input:focus {
+    outline: none;
+    background-color: #FF6F61;
+    color: #fff;
+}
+
+/* Button untuk search (ikon search) */
+.dashboard-navbar-search-btn {
+    background-color: transparent; /* Tidak ada background */
+    border: none;
+    color: #D6D6D6; /* Ikon search berwarna merah */
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6rem 0.7rem;
+    transition: background-color 0.3s ease;
+}
+
+.dashboard-navbar-search-btn:hover {
+    color: #fff;
+}
+
+/* Ikon search */
+.dashboard-navbar-search-btn i {
+    color: #D6D6D6; /* Warna merah untuk ikon */
+    padding: 0.75rem;
+    text-align: center;
+    border-radius: 20px;
+    margin-right: 20px;
+}
+
+.dashboard-navbar-search-btn i:hover{
+    background-color: #FF6F61;
+    color: #fff;
+}
+
+
+@media (max-width: 768px) {
+    .dashboard-navbar-title {
+        font-size: 1rem;
+    }
+
+    .dashboard-navbar-search-input {
+        max-width: 120px;
+    }
+}

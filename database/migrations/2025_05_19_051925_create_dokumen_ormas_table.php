@@ -1,0 +1,32 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('dokumen', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('ormas_id')->constrained('ormas')->onDelete('cascade');
+            $table->string('no_akta_notaris')->nullable();
+            $table->date('tgl_akta_notaris')->nullable();
+            $table->string('no_ahu_skt')->nullable();
+            $table->date('tgl_ahu_skt')->nullable();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('dokumen_ormas');
+    }
+};

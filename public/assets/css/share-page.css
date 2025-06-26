@@ -1,0 +1,270 @@
+/* Share Section */
+.page-share {
+    background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+    padding: 2rem;
+    border-radius: 20px;
+    margin-top: 2rem;
+}
+
+.share-title {
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.share-options {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.share-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.share-icon:hover {
+    transform: translateY(-3px) scale(1.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    color: white;
+    text-decoration: none;
+}
+
+.share-icon.facebook { 
+    background: linear-gradient(135deg, #1877f2, #0d5dbf); 
+}
+.share-icon.twitter { 
+    background: linear-gradient(135deg, #000, #333); 
+}
+.share-icon.whatsapp { 
+    background: linear-gradient(135deg, #25d366, #1da251); 
+}
+.share-icon.email {
+    background: linear-gradient(135deg, #B40D14, #333); 
+}
+.share-icon.copy { 
+    background: linear-gradient(135deg, #6b7280, #4b5563); 
+}
+/* Toast */
+.copy-toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: #B40D14;
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #fff;
+    font-weight: 500;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.copy-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.copy-toast.hidden {
+    display: none;
+}
+
+
+/* ========== MOBILE RESPONSIVE ========== */
+
+/* Mobile Large (768px ke bawah) */
+@media (max-width: 768px) {
+    .share-section {
+        padding: 1rem 0;
+    }
+    
+    .page-share {
+        padding: 1.5rem 1rem;
+        margin-top: 1rem;
+        border-radius: 15px;
+    }
+    
+    .share-title {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .share-title i {
+        font-size: 0.9rem;
+    }
+    
+    .share-options {
+        gap: 0.75rem;
+    }
+    
+    .share-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 1.1rem;
+    }
+    
+    .copy-toast {
+        bottom: 1.5rem;
+        padding: 0.75rem 1.25rem;
+        font-size: 0.9rem;
+        border-radius: 10px;
+        max-width: 90%;
+        text-align: center;
+    }
+}
+
+/* Mobile Medium (576px ke bawah) */
+@media (max-width: 576px) {
+    .page-share {
+        padding: 1.25rem 0.75rem;
+        border-radius: 12px;
+    }
+    
+    .share-title {
+        font-size: 0.95rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .share-options {
+        gap: 0.5rem;
+        justify-content: space-evenly;
+    }
+    
+    .share-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+    }
+    
+    .share-icon:hover {
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .copy-toast {
+        bottom: 1rem;
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+        border-radius: 8px;
+    }
+}
+
+/* Mobile Small (480px ke bawah) */
+@media (max-width: 480px) {
+    .share-section {
+        padding: 0.75rem 0;
+    }
+    
+    .page-share {
+        padding: 1rem 0.5rem;
+        margin-top: 0.75rem;
+        border-radius: 10px;
+    }
+    
+    .share-title {
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .share-title i {
+        font-size: 0.8rem;
+        margin-right: 0.25rem;
+    }
+    
+    .share-options {
+        gap: 0.4rem;
+    }
+    
+    .share-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 0.9rem;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .share-icon:hover {
+        transform: translateY(-1px) scale(1.03);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .copy-toast {
+        bottom: 0.75rem;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8rem;
+        border-radius: 6px;
+        gap: 0.25rem;
+    }
+    
+    .copy-toast i {
+        font-size: 0.75rem;
+    }
+}
+
+/* Mobile Extra Small (360px ke bawah) */
+@media (max-width: 360px) {
+    .page-share {
+        padding: 0.75rem 0.25rem;
+    }
+    
+    .share-title {
+        font-size: 0.85rem;
+    }
+    
+    .share-options {
+        gap: 0.3rem;
+    }
+    
+    .share-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 0.8rem;
+    }
+    
+    .copy-toast {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.75rem;
+        max-width: 95%;
+    }
+}
+
+/* Landscape Mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+    .share-section {
+        padding: 0.5rem 0;
+    }
+    
+    .page-share {
+        padding: 0.75rem;
+        margin-top: 0.5rem;
+    }
+    
+    .share-title {
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .copy-toast {
+        bottom: 0.5rem;
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+    }
+}

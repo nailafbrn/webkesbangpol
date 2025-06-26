@@ -1,0 +1,311 @@
+/* Ormas Management Styles
+
+/* Toggle Switch */
+/* Toggle Switch - Fixed styling */
+.input-toggle-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.toggle-switch {
+    position: relative;
+    width: 320px;
+    height: 50px;
+    overflow: hidden;
+    border-radius: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.toggle-input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-label {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    background: linear-gradient(to right, #4568DC, #B06AB3);
+    border-radius: 30px;
+    overflow: hidden;
+}
+
+.toggle-option {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    z-index: 2;
+    font-size: 16px;
+    padding: 0 20px;
+}
+
+.toggle-label::before {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: calc(50% - 8px);
+    height: calc(100% - 8px);
+    background-color: white;
+    border-radius: 26px;
+    z-index: 1;
+    transition: transform 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.toggle-input:checked + .toggle-label::before {
+    transform: translateX(calc(100%));
+}
+
+.toggle-input:checked + .toggle-label .toggle-option:first-child {
+    color: #555;
+}
+
+.toggle-input:not(:checked) + .toggle-label .toggle-option:last-child {
+    color: #555;
+}
+
+/* Card Styles */
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 12px !important;
+    overflow: hidden;
+    border: none !important;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+.card-header {
+    padding: 1rem 1.25rem;
+    font-weight: 600;
+    border-bottom: none !important;
+}
+
+.card-header h5 {
+    margin-bottom: 0;
+    font-weight: 700;
+}
+
+/* Form Styles */
+.form-label {
+    font-weight: 500;
+    color: #444;
+    margin-bottom: 0.5rem;
+}
+
+.form-control {
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ddd;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
+    border-color: #4299e1;
+}
+
+textarea.form-control {
+    min-height: 100px;
+}
+
+/* Section Styling */
+.pengurus-section {
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: #fafafa;
+    margin-bottom: 1rem;
+}
+
+.pengurus-section h6 {
+    color: #2d3748;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+/* Buttons */
+.btn {
+    border-radius: 8px;
+    padding: 0.6rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    letter-spacing: 0.5px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #4568DC, #B06AB3);
+    border: none;
+    box-shadow: 0 4px 10px rgba(69, 104, 220, 0.3);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #3A56BA, #9A4E9D);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(69, 104, 220, 0.4);
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #FFA000, #FF5722);
+    border: none;
+    color: white;
+    box-shadow: 0 4px 10px rgba(255, 160, 0, 0.3);
+}
+
+.btn-warning:hover {
+    background: linear-gradient(135deg, #E59000, #E54E22);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255, 160, 0, 0.4);
+}
+
+.btn-outline-primary {
+    border: 1px solid #4568DC;
+    color: #4568DC;
+}
+
+.btn-outline-primary:hover {
+    background-color: rgba(69, 104, 220, 0.1);
+    color: #3A56BA;
+}
+
+.form-actions {
+    margin-top: 2rem;
+}
+
+/* File Upload Styling */
+.file-upload-wrapper {
+    position: relative;
+    width: 100%;
+    height: 150px;
+    border: 2px dashed #b0b0b0;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-color: #f8f9fa;
+    transition: all 0.3s ease;
+}
+
+.file-upload-wrapper.highlight {
+    border-color: #4568DC;
+    background-color: rgba(69, 104, 220, 0.05);
+}
+
+.file-upload-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.file-upload-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #555;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    padding: 20px;
+}
+
+.upload-icon {
+    font-size: 3rem;
+    color: #4568DC;
+    margin-bottom: 10px;
+}
+
+.upload-text {
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.upload-hint {
+    font-size: 0.8rem;
+    color: #888;
+}
+
+#file-name-display {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #4568DC;
+    font-weight: 500;
+    min-height: 24px;
+}
+
+.file-selected {
+    padding: 8px 12px;
+    background-color: rgba(69, 104, 220, 0.1);
+    border-radius: 6px;
+    display: inline-block;
+}
+
+/* Modal Styling */
+.modal-content {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #4568DC, #B06AB3);
+    color: white;
+    border-bottom: none;
+    border-radius: 12px 12px 0 0;
+    padding: 1.25rem;
+}
+
+.modal-footer {
+    border-top: none;
+    padding: 1.25rem;
+}
+
+.btn-close {
+    color: white;
+    opacity: 1;
+    text-shadow: none;
+    filter: brightness(0) invert(1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .toggle-switch {
+        width: 280px;
+    }
+    
+    .toggle-option {
+        font-size: 14px;
+    }
+    
+    .card-header {
+        padding: 0.75rem 1rem;
+    }
+    
+    .file-upload-wrapper {
+        height: 120px;
+    }
+    
+    .upload-icon {
+        font-size: 2.5rem;
+    }
+}
+

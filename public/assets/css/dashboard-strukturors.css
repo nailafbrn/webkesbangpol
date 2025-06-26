@@ -1,0 +1,23 @@
+/* Kolom Nama */
+.kolom-nama {
+    min-width: 180px;
+    max-width: 280px;
+    word-break: break-word;
+}
+
+/* Kolom NIP */
+.kolom-nip {
+    min-width: 200px;
+    white-space: nowrap;
+}
+
+/* Kolom Jabatan */
+.kolom-jabatan {
+    min-width: 180px;
+}
+
+/* Kolom Aksi */
+.kolom-aksi {
+    width: 50px;
+    white-space: nowrap;
+}

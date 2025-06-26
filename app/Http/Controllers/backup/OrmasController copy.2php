@@ -1,0 +1,108 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Ormas;
+use App\Models\PengurusOrmas;
+use App\Models\DokumenOrmas;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\MultiSheetOrmasImport;
+
+class OrmasController extends Controller
+{
+    public function index(): View
+    {
+        return view('dashboard.ormass.index');
+    }
+
+    public function create(): View
+    {
+        return view('dashboard.ormass.create');
+    }
+
+    public function store(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls'
+        ]);
+
+        // Mendapatkan file
+        $file = $request->file('file');
+
+        try {
+            $import = new MultiSheetOrmasImport(true);
+            Excel::import($import, $file);
+            $data = $import->collectAllData();
+
+            $seenNames = [];
+            $sourceMap = [
+                'DATA VERIF ORMAS' => 'verif',
+                'OrmasLSM'         => 'lsm',
+                'Yayasan'          => 'yayasan',
+            ];
+
+            // foreach (['DATA VERIF ORMAS', 'OrmasLSM', 'Yayasan'] as $sheet) {
+            foreach (['DATA VERIF ORMAS', 'OrmasLSM', 'Yayasan'] as $sheet) {
+
+                $enumValue = $sourceMap[$sheet] ?? null;
+
+                foreach ($data[$sheet] ?? [] as $row) {
+                    $nama = trim(strtolower($row['nama_organisasi'] ?? ''));
+
+                    if (empty($nama) || isset($seenNames[$nama])) {
+                        continue;
+                    }
+
+                    $seenNames[$nama] = true;
+
+                    // Simpan data Ormas dengan matching berdasarkan nama_organisasi saja
+                    $ormas = Ormas::firstOrCreate(
+                        ['nama_organisasi' => $row['nama_organisasi']],
+                        [
+                            'alamat'      => $row['alamat'],  
+                            'bidang'      => $row['bidang'],  
+                            'sumber_data' => $enumValue,
+                        ]
+                    );
+
+                    // Simpan dokumen jika ada, matching berdasarkan ormas_id
+                    if (!empty($row['akta']) || !empty($row['ahu_skt']) || !empty($row['npwp'])) {
+                        DokumenOrmas::firstOrCreate(
+                            ['ormas_id' => $ormas->id],
+                            [
+                                'akta_notaris' => $row['akta'] ?? null,
+                                'ahu_skt'      => $row['ahu_skt'] ?? null,
+                                'npwp'         => $row['npwp'] ?? null,
+                            ]
+                        );
+                    }
+
+                    // Simpan pengurus jika ada, matching berdasarkan kombinasi unik
+                    if (!empty($row['pengurus'])) {
+                        foreach ($row['pengurus'] as $pengurus) {
+                            PengurusOrmas::firstOrCreate(
+                                [
+                                    'ormas_id'   => $ormas->id,
+                                    'jabatan'    => $pengurus['jabatan'],  
+                                    'nama'       => $pengurus['nama'],     
+                                ],
+                                [
+                                    'no_telepon' => $pengurus['telepon'],  
+                                ]
+                            );
+                        }
+                    }
+                }
+            }
+            return redirect()->route('ormass.index')->with('success', 'File berhasil diimport');
+        } catch (\Exception $e) {
+            return redirect()->route('ormass.index')->with('error', 'Error: ' . $e->getMessage());
+        }
+    }
+
+}

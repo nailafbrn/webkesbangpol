@@ -1,0 +1,377 @@
+.program-table {
+    table-layout: fixed !important;
+    width: 100% !important;
+}
+
+.program-table th {
+    white-space: normal !important;
+    word-break: break-word !important;
+    vertical-align: middle !important;
+    font-size: 13px !important;
+    text-align: center !important;
+}
+
+/* Atur tinggi minimum biar header nggak terlalu mepet */
+.program-table thead th {
+    min-height: 50px !important;
+    padding: 8px !important;
+}
+
+/* Kolom-kolom data */
+.kolom-nama        { width: 15% !important; word-break: break-word !important; }
+.kolom-alamat      { width: 20% !important; word-break: break-word !important; }
+.kolom-ketua       { width: 10% !important; word-break: break-word !important; }
+.kolom-sekertaris  { width: 10% !important; word-break: break-word !important; }
+.kolom-bendahara   { width: 10% !important; word-break: break-word !important; }
+.kolom-akta        { width: 12% !important; word-break: break-word !important; }
+.kolom-ahu         { width: 12% !important; word-break: break-word !important; }
+.kolom-bidang      { width: 10% !important; word-break: break-word !important; }
+.kolom-telp        { width: 10% !important; word-break: break-word !important; }
+
+/* Kolom aksi */
+.kolom-aksi {
+    width: 60px !important;
+    white-space: nowrap !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+/* Responsif untuk mobile */
+@media (max-width: 768px) {
+    .program-table thead {
+        display: none !important;
+    }
+
+    .program-table tbody td {
+        display: block !important;
+        width: 100% !important;
+    }
+
+    .program-table tbody tr {
+        margin-bottom: 1rem !important;
+        display: block !important;
+        border: 1px solid #dee2e6 !important;
+        border-radius: 8px !important;
+        padding: 10px !important;
+    }
+
+    .program-table tbody td::before {
+        content: attr(data-label) !important;
+        font-weight: bold !important;
+        display: block !important;
+        margin-bottom: 5px !important;
+        color: #666 !important;
+    }
+}
+
+
+
+/* Ormas Management Styles
+Modern and clean design for Ormas management system
+Created: May 2025
+-------------------------------------------------- */
+
+/* Toggle Switch */
+.input-toggle-container {
+    display: flex !important;
+    justify-content: center !important;
+    margin-bottom: 2rem !important;
+}
+
+.toggle-switch {
+    position: relative !important;
+    width: 320px !important;
+    height: 50px !important;
+    background: #f1f5f9 !important;
+    border-radius: 30px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    overflow: hidden !important;
+}
+
+.toggle-input {
+    display: none !important;
+}
+
+.toggle-label {
+    position: relative !important;
+    display: flex !important;
+    width: 100% !important;
+    height: 100% !important;
+    cursor: pointer !important;
+    background: linear-gradient(to right, #4568DC, #B06AB3) !important;
+    border-radius: 30px !important;
+}
+
+.toggle-option {
+    flex: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: white !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+    z-index: 2 !important;
+    font-size: 16px !important;
+    padding: 0 20px !important;
+}
+
+.toggle-label::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 4px !important;
+    left: 4px !important;
+    width: calc(50% - 8px) !important;
+    height: calc(100% - 8px) !important;
+    background-color: white !important;
+    border-radius: 26px !important;
+    z-index: 1 !important;
+    transition: transform 0.3s ease !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.toggle-input:checked + .toggle-label::before {
+    transform: translateX(calc(100%)) !important;
+}
+
+.toggle-input:checked + .toggle-label .toggle-option:first-child {
+    color: #555 !important;
+}
+
+.toggle-input:not(:checked) + .toggle-label .toggle-option:last-child {
+    color: #555 !important;
+}
+
+/* Card Styles */
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    border: none !important;
+}
+
+.card:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+.card-header {
+    padding: 1rem 1.25rem !important;
+    font-weight: 600 !important;
+    border-bottom: none !important;
+}
+
+.card-header h5 {
+    margin-bottom: 0 !important;
+    font-weight: 700 !important;
+}
+
+/* Form Styles */
+.form-label {
+    font-weight: 500 !important;
+    color: #444 !important;
+    margin-bottom: 0.5rem !important;
+}
+
+.form-control {
+    border-radius: 8px !important;
+    padding: 0.75rem 1rem !important;
+    border: 1px solid #ddd !important;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15) !important;
+    border-color: #4299e1 !important;
+}
+
+textarea.form-control {
+    min-height: 100px !important;
+}
+
+/* Section Styling */
+.pengurus-section {
+    padding: 1rem !important;
+    border-radius: 8px !important;
+    background-color: #fafafa !important;
+    margin-bottom: 1rem !important;
+}
+
+.pengurus-section h6 {
+    color: #2d3748 !important;
+    font-weight: 600 !important;
+    margin-bottom: 1rem !important;
+}
+
+/* Buttons */
+.btn {
+    border-radius: 8px !important;
+    padding: 0.6rem 1.5rem !important;
+    font-weight: 500 !important;
+    transition: all 0.3s ease !important;
+    text-transform: uppercase !important;
+    font-size: 0.875rem !important;
+    letter-spacing: 0.5px !important;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #4568DC, #B06AB3) !important;
+    border: none !important;
+    box-shadow: 0 4px 10px rgba(69, 104, 220, 0.3) !important;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #3A56BA, #9A4E9D) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 15px rgba(69, 104, 220, 0.4) !important;
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #FFA000, #FF5722) !important;
+    border: none !important;
+    color: white !important;
+    box-shadow: 0 4px 10px rgba(255, 160, 0, 0.3) !important;
+}
+
+.btn-warning:hover {
+    background: linear-gradient(135deg, #E59000, #E54E22) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 15px rgba(255, 160, 0, 0.4) !important;
+}
+
+.btn-outline-primary {
+    border: 1px solid #4568DC !important;
+    color: #4568DC !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: rgba(69, 104, 220, 0.1) !important;
+    color: #3A56BA !important;
+}
+
+.form-actions {
+    margin-top: 2rem !important;
+}
+
+/* File Upload Styling */
+.file-upload-wrapper {
+    position: relative !important;
+    width: 100% !important;
+    height: 150px !important;
+    border: 2px dashed #b0b0b0 !important;
+    border-radius: 10px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+    background-color: #f8f9fa !important;
+    transition: all 0.3s ease !important;
+}
+
+.file-upload-wrapper.highlight {
+    border-color: #4568DC !important;
+    background-color: rgba(69, 104, 220, 0.05) !important;
+}
+
+.file-upload-input {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    opacity: 0 !important;
+    cursor: pointer !important;
+    z-index: 2 !important;
+}
+
+.file-upload-label {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #555 !important;
+    width: 100% !important;
+    height: 100% !important;
+    cursor: pointer !important;
+    padding: 20px !important;
+}
+
+.upload-icon {
+    font-size: 3rem !important;
+    color: #4568DC !important;
+    margin-bottom: 10px !important;
+}
+
+.upload-text {
+    font-weight: 500 !important;
+    margin-bottom: 5px !important;
+}
+
+.upload-hint {
+    font-size: 0.8rem !important;
+    color: #888 !important;
+}
+
+#file-name-display {
+    text-align: center !important;
+    font-size: 0.9rem !important;
+    color: #4568DC !important;
+    font-weight: 500 !important;
+    min-height: 24px !important;
+}
+
+.file-selected {
+    padding: 8px 12px !important;
+    background-color: rgba(69, 104, 220, 0.1) !important;
+    border-radius: 6px !important;
+    display: inline-block !important;
+}
+
+/* Modal Styling */
+.modal-content {
+    border-radius: 12px !important;
+    border: none !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #4568DC, #B06AB3) !important;
+    color: white !important;
+    border-bottom: none !important;
+    border-radius: 12px 12px 0 0 !important;
+    padding: 1.25rem !important;
+}
+
+.modal-footer {
+    border-top: none !important;
+    padding: 1.25rem !important;
+}
+
+.btn-close {
+    color: white !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+    filter: brightness(0) invert(1) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .toggle-switch {
+        width: 280px !important;
+    }
+    
+    .toggle-option {
+        font-size: 14px !important;
+    }
+    
+    .card-header {
+        padding: 0.75rem 1rem !important;
+    }
+    
+    .file-upload-wrapper {
+        height: 120px !important;
+    }
+    
+    .upload-icon {
+        font-size: 2.5rem !important;
+    }
+}
