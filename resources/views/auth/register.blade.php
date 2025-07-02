@@ -1,6 +1,8 @@
 @extends('auth.auth-page')
 
 @section('title', 'Register')
+    {{-- RECAPTCHA SCRIPT --}}
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <link rel="stylesheet" href="{{ asset('assets/css/register-form.css') }}">
 
 @section('auth_body')
@@ -17,7 +19,6 @@
             <img src="{{ asset('images/component/logo1-2.png') }}" alt="Logo Kesbangpol" class="logo-img me-2">
             <h2 class="logo-text m-0">BAKESBANGPOL</h2>
         </div>
-
 
         <h3 class="text-center mb-4">Register a new membership</h3>
 
@@ -68,12 +69,20 @@
                 @enderror
             </div>
 
+            {{-- RECAPTCHA --}}
+            <div class="form-group mt-3">
+                {!! NoCaptcha::display() !!}
+                @if ($errors->has('g-recaptcha-response'))
+                    <span class="text-danger">
+                        <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                    </span>
+                @endif
+            </div>
 
             {{-- Submit Button --}}
             <button type="submit" class="btn-register w-100">
                 <span class="btn-text">Register</span>
                 <span class="btn-icon">
-                    {{-- Inline SVG Icon --}}
                     <i class="fas fa-user-plus"></i>
                 </span>
             </button>
@@ -86,10 +95,7 @@
             @endif
 
         </form>
-
     </div>
 </div>
-
-
 
 @endsection
