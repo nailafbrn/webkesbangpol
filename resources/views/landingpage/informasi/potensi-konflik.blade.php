@@ -24,7 +24,7 @@
                 
                 <div class="stat-card">
                     <div class="stat-icon" style="background: linear-gradient(135deg, #4ecdc4, #44a08d);">
-                        🏘️
+                        🏘
                     </div>
                     <div class="stat-number" id="totalKecamatan">{{ count($statistikKecamatan) }}</div>
                     <div class="stat-label">Kecamatan Terlibat</div>
@@ -40,7 +40,7 @@
                 
                 <div class="stat-card">
                     <div class="stat-icon" style="background: linear-gradient(135deg, #96ceb4, #85c1a7);">
-                        ⚠️
+                        ⚠
                     </div>
                     <div class="stat-number" id="konflikAktif">
                         {{ $potensiKonfliks->where('status', 'aktif')->count() }}
@@ -53,7 +53,7 @@
             <div class="top-control-bar">
                 <!-- Filter Tahun -->
                 <div class="year-filter-container">
-                    <label for="yearFilter" class="year-filter-label">🗓️ Filter Tahun:</label>
+                    <label for="yearFilter" class="year-filter-label">🗓 Filter Tahun:</label>
                     <select id="yearFilter" class="year-select">
                         <option value="">Semua Tahun</option>
                         <!-- Years will be populated by JavaScript -->
@@ -287,28 +287,21 @@
                     btn.classList.toggle('active', btn.getAttribute('data-target') === targetClass);
                 });
 
-                // **PERBAIKAN: Reset filter tahun untuk SEMUA perpindahan view**
                 const previousView = currentView;
                 
-                // Jika pindah DARI maps/chart KE tabel, atau DARI tabel KE maps/chart
                 if (previousView !== targetClass) {
-                    // Reset filter tahun ke default (kosong/semua data)
                     document.getElementById('yearFilter').value = '';
                     currentYear = '';
                     
-                    // **TAMBAHAN: Update statistik segera setelah reset filter**
                     if (targetClass === 'table-container') {
-                        // Jika pindah ke tabel, tampilkan statistik semua data dulu
                         updateTableStatistics();
                         animateNumbers();
                     } else {
-                        // Jika pindah ke maps/chart, tampilkan statistik semua data
                         updateMapsChartStatistics();
                         animateNumbers();
                     }
                 }
                 
-                // Update currentView
                 currentView = targetClass;
 
                 if (targetClass === 'gis-container' && map) {
@@ -317,24 +310,19 @@
                     }, 0);
                 }
 
-                // Simpan tampilan terakhir HANYA jika table yang dipilih
                 if (targetClass === 'table-container') {
                     localStorage.setItem('lastView', 'table-container');
                 } else {
                     localStorage.removeItem('lastView');
                 }
 
-                // **PERBAIKAN: Update view setelah semua reset selesai**
                 if (targetClass !== 'table-container') {
                     updateCurrentView();
                 }
             }
-
-            // **PERBAIKAN: Inisialisasi view dengan reset yang tepat**
             const lastView = localStorage.getItem('lastView') === 'table-container' ? 'table-container' : 'gis-container';
             currentView = lastView;
             
-            // Reset filter saat inisialisasi
             document.getElementById('yearFilter').value = '';
             currentYear = '';
             
@@ -354,64 +342,52 @@
     <!-- Main Script -->
     <script>
         // INISIALISASI DATA & VARIABEL
-        // Mengambil data dari server (Laravel Blade) ke JavaScript
         const potensiKonfliks = @json($potensiKonfliks);
         const statistikKategori = @json($statistikKategori);
         const statistikKecamatan = @json($statistikKecamatan);
         const statistikTingkat = @json($statistikTingkat);
-        const statistikKelurahan = @json($statistikKelurahan); // NEW: Data statistik per kelurahan
+        const statistikKelurahan = @json($statistikKelurahan);
 
-        // Variabel global untuk menyimpan objek-objek utama
         let map;
         let markers = [];
         let charts = {};
         let currentYear = '';
 
-        // NEW: Variabel untuk GeoJSON layers
         let kecamatanLayer;
         let kelurahanLayer;
         let geoJsonKecamatan;
         let geoJsonKelurahan;
         
-        // Label aktif (hanya satu)
         let activeLabel = null;
 
-        // NEW: Variabel untuk mencegah event berulang
         let isHovering = false;
         let hoverTimeout = null;
         let currentHoveredFeature = null;
 
         // EVENT LISTENER UTAMA
-        
-        // Event listener yang dijalankan ketika halaman selesai dimuat
         document.addEventListener('DOMContentLoaded', function () {
-            initializeMap();        // Inisialisasi peta
-            initializeYearFilter(); // Inisialisasi dropdown filter tahun
-            initializeCharts();     // Inisialisasi semua chart kosong
-            loadGeoJsonData(); // NEW: Load GeoJSON data
-            // updateChartDescriptions(); // Update narasi deskripsi dan judul
+            initializeMap();
+            initializeYearFilter();
+            initializeCharts();
+            loadGeoJsonData();
             
-            // **TAMBAHAN: Inisialisasi statistik berdasarkan view awal**
             if (currentView === 'table-container') {
-                updateTableStatistics(); // Statistik terfilter untuk tabel
+                updateTableStatistics();
             } else {
-                updateMapsChartStatistics(); // Statistik semua data untuk maps/chart
+                updateMapsChartStatistics();
             }
-            animateNumbers(); // Animasi untuk semua view
+            animateNumbers();
 
-            // Event listener untuk perubahan filter tahun
             document.getElementById('yearFilter').addEventListener('change', function() {
                 const newYear = this.value;
                 const oldYear = currentYear;
 
-                // **PERBAIKAN: Jika sedang di view table, langsung reload tanpa konfirmasi berulang**
                 if (currentView === 'table-container') {
                     currentYear = newYear;
                     reloadTableWithYearFilter(newYear);
-                    return; // **PENTING: Stop execution di sini untuk table**
+                    return;
                 }
 
-                // Untuk view lain (maps & chart), proses seperti biasa
                 if (newYear !== oldYear) {
                     currentYear = newYear;
                     updateCurrentView();
@@ -419,10 +395,8 @@
             });
         });
 
-        // NEW: FUNGSI LOAD GEOJSON DATA
         async function loadGeoJsonData() {
             try {
-                // Load kedua file GeoJSON secara bersamaan
                 const [kecamatanResponse, kelurahanResponse] = await Promise.all([
                     fetch('/geojson-bandung-master/3273-kota-bandung-level-kecamatan.json'),
                     fetch('/geojson-bandung-master/3273-kota-bandung-level-kelurahan.json')
@@ -431,27 +405,19 @@
                 geoJsonKecamatan = await kecamatanResponse.json();
                 geoJsonKelurahan = await kelurahanResponse.json();
 
-                console.log('geoJsonKelurahan structure:', geoJsonKelurahan); // ← TAMBAH INI
-                console.log('First feature:', geoJsonKelurahan.features[0]); // ← TAMBAH INI
-                console.log('First feature properties:', geoJsonKelurahan.features[0].properties); // ← TAMBAH INI
-
                 console.log('GeoJSON data loaded successfully');
                 
-                // Setelah data loaded, update visualisasi
                 updateVisualization();
             } catch (error) {
                 console.error('Error loading GeoJSON data:', error);
-                // Fallback ke sistem marker lama jika GeoJSON gagal dimuat
                 updateMapWithMarkers();
             }
         }
 
-            // FUNGSI GABUNGAN UNTUK MENANGANI EVENT KELURAHAN - BARU
         function onEachKelurahanCombined(feature, layer) {
             const kelurahanName = feature.properties.nama_kelurahan;
             const kecamatanName = feature.properties.nama_kecamatan;
 
-            // Hitung centroid polygon untuk label
             let centroid = null;
             if (feature.geometry.type === 'Polygon') {
                 centroid = calculateCentroid(feature.geometry.coordinates[0]);
@@ -459,17 +425,14 @@
                 centroid = calculateCentroid(feature.geometry.coordinates[0][0]);
             }
 
-            // Data konflik untuk popup
             const filteredData = getFilteredData();
             const listConflict = filteredData.filter(item => item.lokasi_kelurahan === kelurahanName);
             const totalCount = listConflict.length;
 
-            // Hitung per tingkat untuk popup
             const highCount = listConflict.filter(c => c.tingkat_potensi === 'tinggi').length;
             const mediumCount = listConflict.filter(c => c.tingkat_potensi === 'sedang').length;
             const lowCount = listConflict.filter(c => c.tingkat_potensi === 'rendah').length;
 
-            // Buat popup content dengan enhanced styling
             let popupContent = `
                 <div class="main-popup-container" style="min-width: 250px; font-family: Arial, sans-serif;">
                     <div class="popup-left-panel" style="position: relative;">
@@ -499,8 +462,8 @@
                 listConflict.forEach((conflict, index) => {
                     const priorityColor = getPriorityColor(conflict.tingkat_potensi);
                     const statusBadge = getStatusBadge(conflict.status);
-                    
-                    popupContent += `
+
+                popupContent += `
                         <div class="conflict-item" 
                             data-conflict-id="${conflict.id || index}"
                             style="padding: 8px; margin: 0; background: #fff; border-bottom: 1px solid #f1f5f9; 
@@ -551,13 +514,11 @@
                 </div>
             `;
 
-            // Bind popup dengan enhanced options
             layer.bindPopup(popupContent, {
                 maxWidth: 800,
                 className: 'enhanced-popup'
             });
 
-            // Event handlers
             layer.on({
                 mouseover: function(e) {
                     if (currentHoveredFeature === kelurahanName || isHovering) {
@@ -629,7 +590,6 @@
                 }
             });
 
-            // Add event listener untuk popup setelah dibuka
             layer.on('popupopen', function(e) {
                 setTimeout(() => {
                     setupConflictItemHandlers(kelurahanName, listConflict);
@@ -637,7 +597,6 @@
             });
         }
 
-        // Fungsi helper untuk mendapatkan warna berdasarkan prioritas
         function getPriorityColor(tingkat) {
             switch(tingkat?.toLowerCase()) {
                 case 'tinggi': return '#FF0000';
@@ -647,7 +606,6 @@
             }
         }
 
-        // Fungsi helper untuk mendapatkan badge status
         function getStatusBadge(status) {
             const statusColors = {
                 'aktif': '#e53e3e',
@@ -655,15 +613,14 @@
                 'selesai': '#48bb78',
                 'pending': '#a0aec0'
             };
-            
+
             const color = statusColors[status?.toLowerCase()] || '#a0aec0';
             return `<span style="background: ${color}; color: white; padding: 2px 6px; 
-                            border-radius: 10px; font-size: 0.7em; font-weight: bold;">
+                                border-radius: 10px; font-size: 0.7em; font-weight: bold;">
                         ${status || 'N/A'}
                     </span>`;
         }
 
-        // Fungsi untuk setup event handlers pada conflict items
         function setupConflictItemHandlers(kelurahanName, listConflict) {
             const conflictItems = document.querySelectorAll('.conflict-item');
             const detailPanel = document.getElementById(`detail-panel-${kelurahanName.replace(/\s+/g, '-')}`);
@@ -671,7 +628,6 @@
             if (!detailPanel) return;
 
             conflictItems.forEach((item, index) => {
-                // Hover effects
                 item.addEventListener('mouseenter', function() {
                     this.style.background = '#f7fafc';
                     this.style.transform = 'translateX(2px)';
@@ -682,26 +638,21 @@
                     this.style.transform = 'translateX(0)';
                 });
 
-                // Click handler
                 item.addEventListener('click', function(e) {
                     e.stopPropagation();
                     
                     const conflictData = listConflict[index];
                     if (!conflictData) return;
 
-                    // Remove active class from all items
                     conflictItems.forEach(i => i.classList.remove('active-conflict'));
                     
-                    // Add active class to clicked item
                     this.classList.add('active-conflict');
                     
-                    // Show detail panel
                     showConflictDetail(detailPanel, conflictData);
                 });
             });
         }
 
-        // Fungsi untuk menampilkan detail konflik
         function showConflictDetail(detailPanel, conflictData) {
             const detailContent = detailPanel.querySelector('.detail-content');
             
@@ -712,7 +663,7 @@
                 <div style="border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 15px;">
                     <button onclick="hideConflictDetail('${detailPanel.id}')" 
                             style="float: right; background: none; border: none; 
-                                font-size: 16px; cursor: pointer; color: #a0aec0;">
+                                    font-size: 16px; cursor: pointer; color: #a0aec0;">
                         ✕
                     </button>
                     <h6 style="margin: 0; color: #2d3748; font-size: 1em;">Detail Konflik</h6>
@@ -733,8 +684,8 @@
                             <strong style="font-size: 0.8em; color: #4a5568;">Tingkat Potensi:</strong>
                             <div style="margin-top: 2px;">
                                 <span style="background: ${priorityColor}; color: white; 
-                                        padding: 2px 8px; border-radius: 12px; 
-                                        font-size: 0.75em; font-weight: bold;">
+                                            padding: 2px 8px; border-radius: 12px; 
+                                            font-size: 0.75em; font-weight: bold;">
                                     ${conflictData.tingkat_potensi || 'N/A'}
                                 </span>
                             </div>
@@ -790,20 +741,17 @@
             detailPanel.style.display = 'block';
         }
 
-        // Fungsi helper untuk menyembunyikan detail panel
         function hideConflictDetail(panelId) {
             const panel = document.getElementById(panelId);
             if (panel) {
                 panel.style.display = 'none';
             }
             
-            // Remove active class from all conflict items
             document.querySelectorAll('.conflict-item').forEach(item => {
                 item.classList.remove('active-conflict');
             });
         }
 
-        // Fungsi helper untuk format tanggal
         function formatDate(dateString) {
             try {
                 const date = new Date(dateString);
@@ -818,7 +766,6 @@
         }
 
 
-        // CSS untuk styling tambahan (tambahkan ke stylesheet)
         const additionalCSS = `
             .enhanced-popup .leaflet-popup-content-wrapper {
                 overflow: visible !important;
@@ -848,7 +795,6 @@
             }
         `;
 
-        // Inject CSS
         if (!document.getElementById('enhanced-popup-styles')) {
             const style = document.createElement('style');
             style.id = 'enhanced-popup-styles';
@@ -857,12 +803,11 @@
         }
 
         function showKelurahanLabel(feature, centroidCoords, conflictCount) {
-            // Hapus label sebelumnya (jika ada)
             removeActiveLabel();
 
             const kelurahanName = feature.properties.nama_kelurahan;
 
-            // Siapkan konten HTML untuk label
+            // PERBAIKAN: HTML di dalam ternary operator harus dalam bentuk string (menggunakan backtick ``)
             const labelContent = `
                 <div style="
                     background: rgba(255, 255, 255, 0.95);
@@ -886,7 +831,6 @@
                 </div>
             `;
 
-            // Buat marker dengan divIcon di titik centroid
             activeLabel = L.marker(
                 [centroidCoords[1], centroidCoords[0]],
                 {
@@ -897,7 +841,7 @@
                         iconAnchor: [0, 0]
                     }),
                     zIndexOffset: 1000,
-                    interactive: false // Penting: label tidak boleh interactive
+                    interactive: false
                 }
             ).addTo(map);
         }
@@ -917,7 +861,6 @@
             );
         }
 
-        // NEW: FUNGSI UNTUK MENGHITUNG CENTROID POLYGON
         function calculateCentroid(coordinates) {
             let x = 0, y = 0, area = 0;
             const len = coordinates.length;
@@ -940,7 +883,6 @@
             return [x / (6 * area), y / (6 * area)];
         }
 
-        // NEW: FUNGSI UNTUK MEMBUAT LEGEND GRADASI WARNA
         function createColorLegend() {
             const legend = L.control({position: 'bottomright'});
             
@@ -973,21 +915,18 @@
             return legend;
         }
 
-        // INISIALISASI PETA LEAFLET
         function initializeMap() {
             addMinimalInfoControlStyles();
             map = L.map('map', {
-                minZoom: 12  // Batas minimum zoom (tidak bisa zoom out lebih dari level 12)
+                minZoom: 12
             }).setView([-6.9175, 107.6191], 12);
             
-            // 1) Lapisan utama: CartoDB Positron tanpa label (grayscale-nolabels)
             L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
                 attribution: '© OpenStreetMap contributors © CARTO',
                 subdomains: 'abcd',
                 maxZoom: 19
             }).addTo(map);
             
-            // 2) Lapisan overlay hanya label: CartoDB Positron only_labels
             L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png', {
                 attribution: '',
                 subdomains: 'abcd',
@@ -996,12 +935,10 @@
                 opacity: 1
             }).addTo(map);
             
-            // Tombol Home untuk kembali ke titik awal
             const homeButton = L.control({ position: 'topleft' });
             homeButton.onAdd = function (map) {
                 const div = L.DomUtil.create('div', 'home-button-control');
-                div.innerHTML = '<button class="home-btn" title="Kembali ke posisi awal"><i class="fa-solid fa-location-dot"></i></button>';        
-                // Event handler untuk tombol home
+                div.innerHTML = '<button class="home-btn" title="Kembali ke posisi awal"><i class="fa-solid fa-location-dot"></i></button>';            
                 div.onclick = function(e) {
                     e.stopPropagation();
                     map.setView([-6.9175, 107.6191], 12, {
@@ -1014,7 +951,6 @@
             };
             homeButton.addTo(map);
             
-            // Info control (sama seperti sebelumnya)
             const info = L.control({ position: 'topright' });
             info.onAdd = function (map) {
                 this._div = L.DomUtil.create('div', 'info-control');
@@ -1035,7 +971,7 @@
                         </div>
                     </div>` :
                     `<div class="info-header">
-                        <i class="info-icon">ℹ️</i>
+                        <i class="info-icon">ℹ</i>
                         <span class="info-title">Info Lokasi</span>
                     </div>
                     <div class="info-placeholder">
@@ -1048,7 +984,6 @@
         }
 
         function addMinimalInfoControlStyles() {
-            // Cek apakah style sudah ada untuk menghindari duplikasi
             if (document.getElementById('minimal-info-control-styles')) {
                 return;
             }
@@ -1056,7 +991,6 @@
             const style = document.createElement('style');
             style.id = 'minimal-info-control-styles';
             style.textContent = `
-                /* Minimal Info Control Styling */
                 .info-control {
                     background: white;
                     border: 2px solid #e2e8f0;
@@ -1068,12 +1002,10 @@
                     overflow: hidden;
                     transition: all 0.2s ease;
                 }
-
                 .info-control:hover {
                     border-color: #cbd5e0;
                     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
                 }
-
                 .info-header {
                     background: #f7fafc;
                     color: #4a5568;
@@ -1083,118 +1015,40 @@
                     gap: 6px;
                     border-bottom: 1px solid #e2e8f0;
                 }
-
-                .info-icon {
-                    font-size: 14px;
-                }
-
-                .info-title {
-                    font-weight: 600;
-                    font-size: 13px;
-                    color: #2d3748;
-                }
-
-                .info-content {
-                    padding: 14px;
-                }
-
-                .location-name {
-                    font-size: 16px;
-                    font-weight: 600;
-                    color: #1a202c;
-                    margin-bottom: 6px;
-                }
-
-                .conflict-count {
-                    display: flex;
-                    align-items: baseline;
-                    gap: 5px;
-                }
-
-                .count-number {
-                    font-size: 20px;
-                    font-weight: 700;
-                    color: #dc2626;
-                }
-
-                .count-label {
-                    font-size: 11px;
-                    color: #6b7280;
-                    text-transform: uppercase;
-                    letter-spacing: 0.3px;
-                }
-
-                .info-placeholder {
-                    padding: 14px;
-                    color: #6b7280;
-                    font-size: 12px;
-                    text-align: center;
-                }
-
-                /* Home Button Styling */
-                .home-button-control {
-                    background: none;
-                    border: none;
-                    margin: 0;
-                    padding: 0;
-                }
-
+                .info-icon { font-size: 14px; }
+                .info-title { font-weight: 600; font-size: 13px; color: #2d3748; }
+                .info-content { padding: 14px; }
+                .location-name { font-size: 16px; font-weight: 600; color: #1a202c; margin-bottom: 6px; }
+                .conflict-count { display: flex; align-items: baseline; gap: 5px; }
+                .count-number { font-size: 20px; font-weight: 700; color: #dc2626; }
+                .count-label { font-size: 11px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.3px; }
+                .info-placeholder { padding: 14px; color: #6b7280; font-size: 12px; text-align: center; }
+                .home-button-control { background: none; border: none; margin: 0; padding: 0; }
                 .home-btn {
-                    background: white;
-                    border: 2px solid #e2e8f0;
-                    border-radius: 6px;
-                    width: 40px;
-                    height: 40px;
-                    font-size: 16px;
-                    cursor: pointer;
-                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-                    transition: all 0.2s ease;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
+                    background: white; border: 2px solid #e2e8f0; border-radius: 6px;
+                    width: 40px; height: 40px; font-size: 16px; cursor: pointer;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); transition: all 0.2s ease;
+                    display: flex; align-items: center; justify-content: center;
                 }
-
                 .home-btn:hover {
-                    background: #f7fafc;
-                    border-color: #cbd5e0;
-                    transform: translateY(-1px);
+                    background: #f7fafc; border-color: #cbd5e0; transform: translateY(-1px);
                     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
                 }
-
-                .home-btn:active {
-                    transform: translateY(0);
-                    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-                }
+                .home-btn:active { transform: translateY(0); box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); }
             `;
             
             document.head.appendChild(style);
         }
 
-        // FUNGSI UNTUK MENGHITUNG WARNA BERDASARKAN JUMLAH KONFLIK
         function getColorForKonflik(count, maxCount) {
             if (count === 0) return '#f0f0f0';
-
-            const intensity = count / maxCount;  // nilai antara 0 dan 1
-
-            if (intensity <= 0.20) {
-                // 0% – 20%: hijau muda
-                return 'rgb(0, 180, 0)';
-            } 
-            else if (intensity <= 0.60) {
-                // >20% – 60%: kuning
-                return 'rgb(255, 200, 0)';
-            } 
-            else if (intensity <= 0.80) {
-                // >60% – 80%: oranye
-                return 'rgb(255, 90, 0)';         // #FFC000
-            } 
-            else {
-                // >80% – 100%: merah
-                return 'rgb(255, 0, 0)';           // #FF0000
-            }
+            const intensity = count / maxCount;
+            if (intensity <= 0.20) return 'rgb(0, 180, 0)';
+            else if (intensity <= 0.60) return 'rgb(255, 200, 0)';
+            else if (intensity <= 0.80) return 'rgb(255, 90, 0)';
+            else return 'rgb(255, 0, 0)';
         }
 
-        // FUNGSI FILTER DATA
         function getFilteredData() {
             if (!currentYear) return potensiKonfliks;
             
@@ -1204,92 +1058,61 @@
             });
         }
 
-        // FUNGSI UPDATE PETA DENGAN GEOJSON - DIPERBAIKI
         function updateMapWithGeoJson() {
-            // Hapus layer lama jika ada
-            if (kecamatanLayer) {
-                map.removeLayer(kecamatanLayer);
-                kecamatanLayer = null;
-            }
-            if (kelurahanLayer) {
-                map.removeLayer(kelurahanLayer);
-                kelurahanLayer = null;
-            }
+            if (kecamatanLayer) map.removeLayer(kecamatanLayer);
+            if (kelurahanLayer) map.removeLayer(kelurahanLayer);
+            kecamatanLayer = null;
+            kelurahanLayer = null;
 
-            // Reset semua state
             removeActiveLabel();
             currentHoveredFeature = null;
             isHovering = false;
-            if (hoverTimeout) {
-                clearTimeout(hoverTimeout);
-                hoverTimeout = null;
-            }
+            if (hoverTimeout) clearTimeout(hoverTimeout);
+            hoverTimeout = null;
 
             const filteredData = getFilteredData();
 
-            // Kelompokkan hasil filter berdasarkan nama kelurahan
             const kelurahanData = {};
             filteredData.forEach(item => {
                 const namaKel = item.lokasi_kelurahan;
-                if (!kelurahanData[namaKel]) {
-                    kelurahanData[namaKel] = [];
-                }
+                if (!kelurahanData[namaKel]) kelurahanData[namaKel] = [];
                 kelurahanData[namaKel].push(item);
             });
 
-            // Cari konflik maksimum untuk gradiasi warna
-            const maxKonflik = Math.max(
-                1, 
-                ...Object.values(kelurahanData).map(arr => arr.length)
-            );
+            const maxKonflik = Math.max(1, ...Object.values(kelurahanData).map(arr => arr.length));
 
-            // Style layer kelurahan (area berwarna)
             function styleKelurahan(feature) {
                 const namaKel = feature.properties.nama_kelurahan;
                 const count = kelurahanData[namaKel] ? kelurahanData[namaKel].length : 0;
                 return {
                     fillColor: getColorForKonflik(count, maxKonflik),
-                    weight: 1,
-                    opacity: 0.8,
-                    color: '#ffffff',
-                    fillOpacity: 0.7
+                    weight: 1, opacity: 0.8, color: '#ffffff', fillOpacity: 0.7
                 };
             }
 
-            // Style layer kecamatan (hanya garis batas)
             function styleKecamatan(feature) {
                 return {
-                    fillColor: 'transparent',
-                    weight: 2,
-                    opacity: 1,
-                    color: '#2563eb',
-                    fillOpacity: 0,
-                    interactive: false // Penting: kecamatan layer tidak interactive
+                    fillColor: 'transparent', weight: 2, opacity: 1,
+                    color: '#2563eb', fillOpacity: 0, interactive: false
                 };
             }
 
-            // Buat layer kelurahan dengan fungsi gabungan
             kelurahanLayer = L.geoJson(geoJsonKelurahan, {
                 style: styleKelurahan,
                 onEachFeature: onEachKelurahanCombined
             }).addTo(map);
 
-            // Layer kecamatan (garis batas di atas) - NON-INTERACTIVE
             kecamatanLayer = L.geoJson(geoJsonKecamatan, {
                 style: styleKecamatan,
-                interactive: false // Mencegah event pada layer kecamatan
+                interactive: false
             }).addTo(map);
 
-            // Tambahkan legend jika belum ada
             if (!map.legend) {
                 map.legend = createColorLegend();
                 map.legend.addTo(map);
             }
-
-            console.log('Map updated with GeoJSON layers');
         }
 
-        // FUNGSI UPDATE PETA UTAMA
         function updateMap() {
             if (geoJsonKecamatan && geoJsonKelurahan) {
                 updateMapWithGeoJson();
@@ -1298,31 +1121,22 @@
             }
         }
 
-        // FALLBACK: FUNGSI UPDATE PETA DENGAN MARKER (sistem lama)
         function updateMapWithMarkers() {
-            // Kode marker lama tetap ada sebagai fallback
             markers.forEach(marker => map.removeLayer(marker));
             markers = [];
-            
             const filteredData = getFilteredData();
-            
         }
-        // ============================================================================================================================================================
 
-        // FUNGSI UNTUK MENDAPATKAN PARAMETER URL SAAT INI
         function getUrlParameter(name) {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(name);
         }
 
-        // INISIALISASI FILTER TAHUN
         function initializeYearFilter() {
-            // Mengambil semua tahun unik dari data konflik
             const years = [...new Set(potensiKonfliks.map(item => {
                 return new Date(item.tanggal).getFullYear();
-            }))].sort((a, b) => b - a); // Sort descending (tahun terbaru dulu)
+            }))].sort((a, b) => b - a);
             
-            // Menambahkan option ke dropdown filter
             const yearSelect = document.getElementById('yearFilter');
             years.forEach(year => {
                 const option = document.createElement('option');
@@ -1331,39 +1145,13 @@
                 yearSelect.appendChild(option);
             });
 
-            // Set nilai dropdown berdasarkan parameter URL jika ada
             const urlYearFilter = getUrlParameter('year_filter');
             if (urlYearFilter) {
                 yearSelect.value = urlYearFilter;
                 currentYear = urlYearFilter;
             }
-
         }
 
-        // UPDATE TABEL DATA
-        function updateTableWithPageReload() {
-            if (!currentYear) {
-                // Jika tidak ada filter, hapus parameter year_filter dari URL
-                const currentUrl = new URL(window.location.href);
-                currentUrl.searchParams.delete('year_filter');
-                currentUrl.searchParams.delete('page'); // Reset pagination
-                
-                if (currentUrl.toString() !== window.location.href) {
-                    window.location.href = currentUrl.toString();
-                }
-                return;
-            }
-            
-            // Jika ada filter tahun, reload halaman dengan parameter
-            const currentUrl = new URL(window.location.href);
-            currentUrl.searchParams.set('year_filter', currentYear);
-            currentUrl.searchParams.delete('page'); // Reset ke halaman pertama
-            
-            // Reload halaman dengan parameter baru
-            window.location.href = currentUrl.toString();
-        }
-
-        // FUNGSI BARU: RELOAD TABEL DENGAN FILTER TAHUN
         function reloadTableWithYearFilter(year) {
             const currentUrl = new URL(window.location.href);
             
@@ -1373,34 +1161,24 @@
                 currentUrl.searchParams.delete('year_filter');
             }
             
-            // Reset pagination ke halaman pertama ketika filter berubah
             currentUrl.searchParams.delete('page');
             
-            // Reload halaman dengan parameter baru
             window.location.href = currentUrl.toString();
         }
 
-        // UPDATE SEMUA CHARTS
         function updateCharts() {
             const filteredData = getFilteredData();
             
-            // Hitung ulang statistik untuk data yang sudah difilter
             const kategoriStats = {};
             const kecamatanStats = {};
             const tingkatStats = {};
             
             filteredData.forEach(item => {
-                // Statistik per kategori
                 kategoriStats[item.kategori] = (kategoriStats[item.kategori] || 0) + 1;
-                
-                // Statistik per kecamatan
                 kecamatanStats[item.lokasi_kecamatan] = (kecamatanStats[item.lokasi_kecamatan] || 0) + 1;
-                
-                // Statistik per tingkat potensi
                 tingkatStats[item.tingkat_potensi] = (tingkatStats[item.tingkat_potensi] || 0) + 1;
             });
             
-            // Update masing-masing chart
             updateKategoriChart(kategoriStats);
             updateKecamatanChart(kecamatanStats);
             updateTingkatChart(tingkatStats);
@@ -1420,7 +1198,6 @@
             }
         }
 
-        // Fungsi pembantu: cari entitas (kategori/ kecamatan / tingkat) dengan count tertinggi
         function getMaxGroupInfo(data, key) {
             const countMap = {};
             data.forEach(item => {
@@ -1453,7 +1230,6 @@
             return countMap;
         }
 
-        // Fungsi untuk mendapatkan label tahun (rentang jika semua, atau satu tahun terpilih)
         function formatYearLabel() {
             const allYears = [...new Set(potensiKonfliks.map(i => new Date(i.tanggal).getFullYear()))].sort((a, b) => a - b);
             if (!currentYear) {
@@ -1462,33 +1238,24 @@
             return currentYear;
         }
 
-        // Fungsi untuk baca dropdown tahun
         function getSelectedYear() {
             const yearSelect = document.getElementById('yearFilter');
             if (!yearSelect) return '';
-            return yearSelect.value || ''; // value="" artinya semua
+            return yearSelect.value || '';
         }
 
         function updateChartDescriptions() {
-            // 1. Ambil data sesuai filter tahun
             const data = getFilteredData();
-
-            // 2. Tentukan label tahun (rentang atau satu tahun)
-            const tahunFilter = getSelectedYear(); // '' atau '2023', '2024', dst
-            const tahunLabel = formatYearLabel();   // mis: "2020 - 2025" atau "2023"
-
-            // 3. Cari entitas dengan count tertinggi
+            const tahunLabel = formatYearLabel();
             const kategoriInfo = getMaxGroupInfo(data, 'kategori');
             const kecamatanInfo = getMaxGroupInfo(data, 'lokasi_kecamatan');
             const kecamatanInfo1 = getMinGroupInfo(data, 'lokasi_kecamatan');
             const tingkatInfo = getMaxGroupInfo(data, 'tingkat_potensi');
             const tingkatCounts = getAllGroupCounts(data, 'tingkat_potensi');
-
-
-            // 4. Buat list kategori unik (dipakai di deskripsi kategori)
             const semuaKategori = [...new Set(data.map(item => item.kategori).filter(Boolean))].join(', ');
 
             const urutanTingkat = ['rendah', 'sedang', 'tinggi'];
+            // PERBAIKAN: String harus diapit backtick ``
             const tingkatDescriptions = urutanTingkat
                 .map(tingkat => {
                     const count = tingkatCounts[tingkat] || 0;
@@ -1496,258 +1263,64 @@
                 })
                 .join(', ');
 
-            // 5. Update judul chart (tetap gunakan tahunLabel)
-            document.querySelector('.chart-title-kategori').textContent =
-                `📊 Kategori Konflik di Kota Bandung Tahun ${tahunLabel}`;
-            document.querySelector('.chart-title-kecamatan').textContent =
-                `📍 Persebaran Konflik per Kecamatan Tahun ${tahunLabel}`;
-            document.querySelector('.chart-title-level').textContent =
-                `🚦 Tingkat Potensi Konflik Tahun ${tahunLabel}`;
-            document.querySelector('.chart-title-tahun').textContent =
-                `📈 Tren Konflik per Waktu Tahun ${tahunLabel}`;
+            document.querySelector('.chart-title-kategori').textContent = `📊 Kategori Konflik di Kota Bandung Tahun ${tahunLabel}`;
+            document.querySelector('.chart-title-kecamatan').textContent = `📍 Persebaran Konflik per Kecamatan Tahun ${tahunLabel}`;
+            document.querySelector('.chart-title-level').textContent = `🚦 Tingkat Potensi Konflik Tahun ${tahunLabel}`;
+            document.querySelector('.chart-title-tahun').textContent = `📈 Tren Konflik per Waktu Tahun ${tahunLabel}`;
+            document.querySelector('.gis-title').textContent = `🗺 Peta Sebaran Potensi Konflik Di Kota Bandung Tahun ${tahunLabel}`;
 
-            // TAMBAHAN BARU: Update judul Maps dan Tabel
-            document.querySelector('.gis-title').textContent =
-                `🗺️ Peta Sebaran Potensi Konflik Di Kota Bandung Tahun ${tahunLabel}`;
-
-            // 6. Update deskripsi KATEGORI
-            document.getElementById('desc-kategori').textContent =
-                `Grafik ini menampilkan sebaran potensi konflik menurut kategori penyebabnya, seperti konflik ${semuaKategori}. ` +
-                `Dari grafik terlihat bahwa kategori konflik "${kategoriInfo.labels.join('", "')}" ` +
-                `mendominasi dengan jumlah total konflik terbesar, dengan total ${kategoriInfo.count} konflik pada tahun ${tahunLabel}. ` +
-                `Hal ini menunjukkan bahwa masalah  "${kategoriInfo.labels.join('", "')}" menjadi penyebab utama potensi konflik di Kota Bandung.`;
-
-            // 7. Update deskripsi KECAMATAN
-            document.getElementById('desc-kecamatan').textContent =
-                `Grafik ini memperlihatkan tingkat potensi konflik di masing-masing kecamatan di Kota Bandung. ` +
-                `Misalnya, Kecamatan "${kecamatanInfo.labels.join('", "')}" ` +
-                `memiliki potensi konflik yang tinggi dengan total ${kecamatanInfo.count} konflik, ` +
-                `sementara Kecamatan "${kecamatanInfo1.labels.join('", "')}" ` +
-                `memiliki potensi konflik yang rendah dengan total ${kecamatanInfo1.count} konflik pada tahun ${tahunLabel}. ` +
-                `Grafik ini membantu mengidentifikasi wilayah yang rawan konflik sehingga upaya pencegahan dan pengawasan bisa lebih terfokus. Dengan melihat grafik ini, masyarakat dan pemangku kebijakan dapat memahami kondisi keamanan di lingkungan masing-masing secara lebih jelas.`;
-
-            // 8. Update deskripsi TINGKAT POTENSI
-            document.getElementById('desc-tingkat').textContent =
-                `Grafik ini mengelompokkan potensi konflik berdasarkan tingkatannya, seperti rendah, sedang, dan tinggi. ` +
-                `Secara keseluruhan wilayah di Kota Bandung menunjukkan potensi konflik ${tingkatDescriptions} pada tahun ${tahunLabel}. ` +
-                `Grafik ini memberikan gambaran umum tentang risiko konflik di Kota Bandung, yang dapat menjadi dasar prioritas kebijakan dan langkah preventif.`;
-
-            // 9. Update deskripsi TIMELINE
+            // PERBAIKAN: Penulisan string multi-baris yang salah dan titik koma (;) di dalam string
+            document.getElementById('desc-kategori').textContent = `Grafik ini menampilkan sebaran potensi konflik menurut kategori penyebabnya, seperti konflik ${semuaKategori}. Dari grafik terlihat bahwa kategori konflik "${kategoriInfo.labels.join('", "')}" mendominasi dengan jumlah total konflik terbesar, dengan total ${kategoriInfo.count} konflik pada tahun ${tahunLabel}. Hal ini menunjukkan bahwa masalah "${kategoriInfo.labels.join('", "')}" menjadi penyebab utama potensi konflik di Kota Bandung.`;
+            document.getElementById('desc-kecamatan').textContent = `Grafik ini memperlihatkan tingkat potensi konflik di masing-masing kecamatan di Kota Bandung. Misalnya, Kecamatan "${kecamatanInfo.labels.join('", "')}" memiliki potensi konflik yang tinggi dengan total ${kecamatanInfo.count} konflik, sementara Kecamatan "${kecamatanInfo1.labels.join('", "')}" memiliki potensi konflik yang rendah dengan total ${kecamatanInfo1.count} konflik pada tahun ${tahunLabel}. Grafik ini membantu mengidentifikasi wilayah yang rawan konflik sehingga upaya pencegahan dan pengawasan bisa lebih terfokus. Dengan melihat grafik ini, masyarakat dan pemangku kebijakan dapat memahami kondisi keamanan di lingkungan masing-masing secara lebih jelas.`;
+            document.getElementById('desc-tingkat').textContent = `Grafik ini mengelompokkan potensi konflik berdasarkan tingkatannya, seperti rendah, sedang, dan tinggi. Secara keseluruhan wilayah di Kota Bandung menunjukkan potensi konflik ${tingkatDescriptions} pada tahun ${tahunLabel}. Grafik ini memberikan gambaran umum tentang risiko konflik di Kota Bandung, yang dapat menjadi dasar prioritas kebijakan dan langkah preventif.`;
             const totalTimeline = data.length;
-            document.getElementById('desc-timeline').textContent =
-                `Grafik ini menggambarkan tren potensi konflik dari waktu ke waktu pada tahun ${tahunLabel}. ` +
-                `Total konflik yang tercatat pada periode ini adalah ${totalTimeline} kasus. ` +
-                `Dari grafik terlihat adanya fluktuasi, dengan peningkatan potensi konflik pada beberapa waktu tertentu dan penurunan di waktu lainnya. Tren ini penting untuk memantau dinamika konflik agar langkah antisipatif dapat dilakukan tepat waktu. Dengan memahami pola ini, pemerintah dan masyarakat dapat lebih siap menghadapi potensi konflik yang muncul.`;
+            document.getElementById('desc-timeline').textContent = `Grafik ini menggambarkan tren potensi konflik dari waktu ke waktu pada tahun ${tahunLabel}. Total konflik yang tercatat pada periode ini adalah ${totalTimeline} kasus. Dari grafik terlihat adanya fluktuasi, dengan peningkatan potensi konflik pada beberapa waktu tertentu dan penurunan di waktu lainnya. Tren ini penting untuk memantau dinamika konflik agar langkah antisipatif dapat dilakukan tepat waktu. Dengan memahami pola ini, pemerintah dan masyarakat dapat lebih siap menghadapi potensi konflik yang muncul.`;
         }
 
-        // INISIALISASI SEMUA CHARTS
         function initializeCharts() {
-            // Skema warna untuk semua chart
             const colorSchemes = {
                 primary: ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3', '#54a0ff', '#5f27cd'],
                 gradients: [
-                    'rgba(255, 107, 107, 0.8)',
-                    'rgba(78, 205, 196, 0.8)',
-                    'rgba(69, 183, 209, 0.8)',
-                    'rgba(150, 206, 180, 0.8)',
-                    'rgba(254, 202, 87, 0.8)',
-                    'rgba(255, 159, 243, 0.8)',
-                    'rgba(84, 160, 255, 0.8)',
-                    'rgba(95, 39, 205, 0.8)'
+                    'rgba(255, 107, 107, 0.8)', 'rgba(78, 205, 196, 0.8)', 'rgba(69, 183, 209, 0.8)',
+                    'rgba(150, 206, 180, 0.8)', 'rgba(254, 202, 87, 0.8)', 'rgba(255, 159, 243, 0.8)',
+                    'rgba(84, 160, 255, 0.8)', 'rgba(95, 39, 205, 0.8)'
                 ]
             };
 
-
-            // KATEGORI (DOUGHNUT CHART)
-            // Menampilkan distribusi konflik berdasarkan kategori dalam bentuk donat
             const kategoriCtx = document.getElementById('kategoriChart').getContext('2d');
             charts.kategori = new Chart(kategoriCtx, {
-                type: 'doughnut',
-                data: { 
-                    labels: [], 
-                    datasets: [{ 
-                        data: [], 
-                        backgroundColor: [], 
-                        borderColor: [], 
-                        borderWidth: 2 
-                    }] 
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                padding: 20,
-                                usePointStyle: true,
-                                font: { size: 12 }
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const label = context.label || '';
-                                    const value = context.parsed;
-                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                    const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
-                                    return `${label}: ${value} (${percentage}%)`;
-                                }
-                            }
-                        }
-                    }
-                }
+                type: 'doughnut', data: { labels: [], datasets: [{ data: [], backgroundColor: [], borderColor: [], borderWidth: 2 }] },
+                options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { padding: 20, usePointStyle: true, font: { size: 12 } } }, tooltip: { callbacks: { label: function(c) { const l = c.label||''; const v = c.parsed; const t = c.dataset.data.reduce((a,b)=>a+b,0); const p = t > 0 ? ((v/t)*100).toFixed(1) : 0; return `${l}: ${v} (${p}%)`; } } } } }
             });
 
-
-            // KECAMATAN (BAR CHART)
-            // Menampilkan jumlah konflik per kecamatan dalam bentuk bar chart
             const kecamatanCtx = document.getElementById('kecamatanChart').getContext('2d');
             charts.kecamatan = new Chart(kecamatanCtx, {
-                type: 'bar',
-                data: { 
-                    labels: [], 
-                    datasets: [{ 
-                        label: 'Jumlah Konflik', 
-                        data: [], 
-                        backgroundColor: colorSchemes.gradients[1], 
-                        borderColor: colorSchemes.primary[1], 
-                        borderWidth: 2, 
-                        borderRadius: 8 
-                    }] 
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                            titleColor: 'white',
-                            bodyColor: 'white',
-                            borderColor: colorSchemes.primary[1],
-                            borderWidth: 1
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: { stepSize: 1, color: '#718096' },
-                            grid: { color: 'rgba(113, 128, 150, 0.1)' }
-                        },
-                        x: {
-                            ticks: {
-                                color: '#718096',
-                                autoSkip: false,    // ← jangan lewati label apa pun
-                                maxRotation: 45,    // atau sesuai kebutuhan (0–90)
-                                minRotation: 0
-                            },
-                            grid: { display: false }
-                        }
-                    }
-                }
+                type: 'bar', data: { labels: [], datasets: [{ label: 'Jumlah Konflik', data: [], backgroundColor: colorSchemes.gradients[1], borderColor: colorSchemes.primary[1], borderWidth: 2, borderRadius: 8 }] },
+                options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1, color: '#718096' }, grid: { color: 'rgba(113, 128, 150, 0.1)' } }, x: { ticks: { color: '#718096', autoSkip: false, maxRotation: 45, minRotation: 0 }, grid: { display: false } } } }
             });
 
-
-            // TINGKAT POTENSI (PIE CHART)
-            // Menampilkan distribusi konflik berdasarkan tingkat potensi
             const tingkatCtx = document.getElementById('tingkatChart').getContext('2d');
             charts.tingkat = new Chart(tingkatCtx, {
-                type: 'pie',
-                data: { 
-                    labels: [], 
-                    datasets: [{ 
-                        data: [], 
-                        backgroundColor: [], 
-                        borderColor: [], 
-                        borderWidth: 2 
-                    }] 
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                padding: 20,
-                                usePointStyle: true,
-                                font: { size: 12 }
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const label = context.label || '';
-                                    const value = context.parsed;
-                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                    const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
-                                    return `${label}: ${value} (${percentage}%)`;
-                                }
-                            }
-                        }
-                    }
-                }
+                type: 'pie', data: { labels: [], datasets: [{ data: [], backgroundColor: [], borderColor: [], borderWidth: 2 }] },
+                options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { padding: 20, usePointStyle: true, font: { size: 12 } } }, tooltip: { callbacks: { label: function(c) { const l = c.label||''; const v = c.parsed; const t = c.dataset.data.reduce((a,b)=>a+b,0); const p = t > 0 ? ((v/t)*100).toFixed(1) : 0; return `${l}: ${v} (${p}%)`; } } } } }
             });
 
-
-            // TIMELINE (LINE CHART)
-            // Menampilkan tren konflik dari waktu ke waktu
             const timelineCtx = document.getElementById('timelineChart').getContext('2d');
             charts.timeline = new Chart(timelineCtx, {
-                type: 'line',
-                data: { 
-                    labels: [], 
-                    datasets: [{ 
-                        label: 'Jumlah Konflik', 
-                        data: [], 
-                        borderColor: colorSchemes.primary[2], 
-                        backgroundColor: colorSchemes.gradients[2], 
-                        borderWidth: 3, 
-                        fill: true, 
-                        tension: 0.4 
-                    }] 
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                            titleColor: 'white',
-                            bodyColor: 'white',
-                            borderColor: colorSchemes.primary[2],
-                            borderWidth: 1
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: { stepSize: 1, color: '#718096' },
-                            grid: { color: 'rgba(113, 128, 150, 0.1)' }
-                        },
-                        x: {
-                            ticks: { color: '#718096' },
-                            grid: { color: 'rgba(113, 128, 150, 0.1)' }
-                        }
-                    }
-                }
+                type: 'line', data: { labels: [], datasets: [{ label: 'Jumlah Konflik', data: [], borderColor: colorSchemes.primary[2], backgroundColor: colorSchemes.gradients[2], borderWidth: 3, fill: true, tension: 0.4 }] },
+                options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1, color: '#718096' }, grid: { color: 'rgba(113, 128, 150, 0.1)' } }, x: { ticks: { color: '#718096' }, grid: { color: 'rgba(113, 128, 150, 0.1)' } } } }
             });
         }
 
-        // FUNGSI UPDATE CHART INDIVIDU
-        // Update Chart Kategori dengan data baru
         function updateKategoriChart(data) {
             const labels = Object.keys(data);
             const values = Object.values(data);
             const colorSchemes = {
                 primary: ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3', '#54a0ff', '#5f27cd'],
                 gradients: [
-                    'rgba(255, 107, 107, 0.8)',
-                    'rgba(78, 205, 196, 0.8)',
-                    'rgba(69, 183, 209, 0.8)',
-                    'rgba(150, 206, 180, 0.8)',
-                    'rgba(254, 202, 87, 0.8)',
-                    'rgba(255, 159, 243, 0.8)',
-                    'rgba(84, 160, 255, 0.8)',
-                    'rgba(95, 39, 205, 0.8)'
+                    'rgba(255, 107, 107, 0.8)', 'rgba(78, 205, 196, 0.8)', 'rgba(69, 183, 209, 0.8)',
+                    'rgba(150, 206, 180, 0.8)', 'rgba(254, 202, 87, 0.8)', 'rgba(255, 159, 243, 0.8)',
+                    'rgba(84, 160, 255, 0.8)', 'rgba(95, 39, 205, 0.8)'
                 ]
             };
 
@@ -1758,45 +1331,35 @@
             charts.kategori.update();
         }
 
-        // Update Chart Kecamatan dengan data baru
         function updateKecamatanChart(data) {
-            const entries = Object.entries(data); // [ [kec1, jumlah1], [kec2, jumlah2], ... ]
-            
-            // Urutkan berdasarkan nama kecamatan (A-Z)
-            const sorted = entries.sort((a, b) => a[0].localeCompare(b[0]));
-
+            const sorted = Object.entries(data).sort((a, b) => a[0].localeCompare(b[0]));
             const labels = sorted.map(entry => entry[0]);
             const values = sorted.map(entry => entry[1]);
 
             charts.kecamatan.data.labels = labels;
             charts.kecamatan.data.datasets[0].data = values;
 
-            // Update bar colors berdasarkan tinggi rendahnya jumlah konflik
             const max = Math.max(...values);
             const barColors = values.map(val => {
                 const intensity = val / max;
-                if (intensity > 0.7) return '#e53e3e';       // tinggi → merah
-                if (intensity > 0.4) return '#f6ad55';       // sedang → oranye
-                return '#68d391';                            // rendah → hijau
+                if (intensity > 0.7) return '#e53e3e';
+                if (intensity > 0.4) return '#f6ad55';
+                return '#68d391';
             });
 
             charts.kecamatan.data.datasets[0].backgroundColor = barColors;
-            charts.kecamatan.data.datasets[0].borderColor = barColors; // <- tambahkan ini
-
-
+            charts.kecamatan.data.datasets[0].borderColor = barColors;
             charts.kecamatan.update();
         }
 
-        // Update Chart Tingkat Potensi dengan data baru dan warna sesuai tingkat
         function updateTingkatChart(data) {
             const labels = Object.keys(data);
             const values = Object.values(data);
             
-            // Warna khusus untuk setiap tingkat potensi
             const colors = {
-                'rendah': ['rgba(150, 206, 180, 0.8)', '#96ceb4'],  // Hijau
-                'sedang': ['rgba(254, 202, 87, 0.8)', '#feca57'],   // Kuning
-                'tinggi': ['rgba(255, 107, 107, 0.8)', '#ff6b6b']   // Merah
+                'rendah': ['rgba(150, 206, 180, 0.8)', '#96ceb4'],
+                'sedang': ['rgba(254, 202, 87, 0.8)', '#feca57'],
+                'tinggi': ['rgba(255, 107, 107, 0.8)', '#ff6b6b']
             };
 
             const backgrounds = labels.map(label => colors[label] ? colors[label][0] : 'rgba(200, 200, 200, 0.8)');
@@ -1809,7 +1372,6 @@
             charts.tingkat.update();
         }
 
-        // Update Chart Timeline dengan data baru yang dikelompokkan per bulan
         function updateTimelineChart(filteredData) {
             const selectedYear = document.getElementById('yearFilter').value;
             const timelineData = {};
@@ -1817,13 +1379,11 @@
             filteredData.forEach(item => {
                 const date = new Date(item.tanggal);
                 const year = date.getFullYear();
-                const month = date.getMonth(); // 0 = Jan, 11 = Dec
+                const month = date.getMonth();
 
                 if (!selectedYear) {
-                    // Semua tahun → kelompokkan per tahun
                     timelineData[year] = (timelineData[year] || 0) + 1;
                 } else if (String(year) === selectedYear) {
-                    // Tahun tertentu → kelompokkan per bulan
                     timelineData[month] = (timelineData[month] || 0) + 1;
                 }
             });
@@ -1831,35 +1391,24 @@
             let labels = [], values = [];
 
             if (!selectedYear) {
-                // Mode Semua Tahun
                 const sortedYears = Object.keys(timelineData).sort();
                 labels = sortedYears;
                 values = sortedYears.map(y => timelineData[y]);
             } else {
-                // Mode Tahun Tertentu → tampilkan per bulan
-                labels = [...Array(12).keys()].map(m =>
-                    new Date(0, m).toLocaleString('id-ID', { month: 'short' })
-                );
+                labels = [...Array(12).keys()].map(m => new Date(0, m).toLocaleString('id-ID', { month: 'short' }));
                 values = [...Array(12).keys()].map(m => timelineData[m] || 0);
             }
 
             charts.timeline.data.labels = labels;
             charts.timeline.data.datasets[0].data = values;
             charts.timeline.update();
-
-            // Update deskripsi jika mau
-            document.getElementById('desc-timeline').textContent =
-                selectedYear ?
-                `Menampilkan jumlah konflik per bulan untuk tahun ${selectedYear}.` :
-                'Menampilkan jumlah konflik per tahun.';
         }
 
-        // **TAMBAHAN: Fungsi untuk update tampilan berdasarkan view yang aktif**
         function updateCurrentView() {
             switch(currentView) {
                 case 'gis-container':
                     updateMap();
-                    updateMapsChartStatistics(); // untuk stat cards yang biasanya selalu tampil
+                    updateMapsChartStatistics();
                     animateNumbers();
                     updateChartDescriptions();
                     break;
@@ -1871,52 +1420,33 @@
                     break;
                 case 'table-container':
                     updateTableStatistics();
-                    animateTableNumbers();
+                    animateNumbers(); // Menggunakan animateNumbers yang sama
                     break;
             }
         }
 
-        // Fungsi utama yang dipanggil untuk update semua visualisasi
         function updateVisualization() {
-            // Ini bisa dihapus atau dijadikan wrapper untuk updateCurrentView()
             updateCurrentView();
         }
 
-        // ========== FUNGSI STATISTIK KHUSUS UNTUK TABEL ==========
         function updateTableStatistics() {
-            const filteredData = getFilteredData(); // Data sudah difilter berdasarkan tahun
-            
-            // Update card total konflik
+            const filteredData = getFilteredData();
             document.getElementById('totalKonflik').textContent = filteredData.length;
-            
-            // Update card total kecamatan yang terdampak
             const uniqueKecamatan = [...new Set(filteredData.map(item => item.lokasi_kecamatan))];
             document.getElementById('totalKecamatan').textContent = uniqueKecamatan.length;
-            
-            // Update card total kategori konflik
             const uniqueKategori = [...new Set(filteredData.map(item => item.kategori))];
             document.getElementById('totalKategori').textContent = uniqueKategori.length;
-            
-            // Update card konflik aktif
             const konflikAktif = filteredData.filter(item => item.status === 'aktif').length;
             document.getElementById('konflikAktif').textContent = konflikAktif;
         }
 
         function updateMapsChartStatistics() {
             const filteredData = getFilteredData();
-            
-            // Update card total konflik
             document.getElementById('totalKonflik').textContent = filteredData.length;
-            
-            // Update card total kecamatan yang terdampak
             const uniqueKecamatan = [...new Set(filteredData.map(item => item.lokasi_kecamatan))];
             document.getElementById('totalKecamatan').textContent = uniqueKecamatan.length;
-            
-            // Update card total kategori konflik
             const uniqueKategori = [...new Set(filteredData.map(item => item.kategori))];
             document.getElementById('totalKategori').textContent = uniqueKategori.length;
-            
-            // Update card konflik aktif
             const konflikAktif = filteredData.filter(item => item.status === 'aktif').length;
             document.getElementById('konflikAktif').textContent = konflikAktif;
         }
@@ -1926,7 +1456,7 @@
             statNumbers.forEach(element => {
                 const target = parseInt(element.textContent);
                 let current = 0;
-                const increment = target / 50; // Dibagi 50 step untuk animasi smooth
+                const increment = target / 50;
                 const timer = setInterval(() => {
                     current += increment;
                     if (current >= target) {
@@ -1935,7 +1465,7 @@
                     } else {
                         element.textContent = Math.floor(current);
                     }
-                }, 30); // Update setiap 30ms
+                }, 30);
             });
         }
     </script>

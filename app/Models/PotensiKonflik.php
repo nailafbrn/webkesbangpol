@@ -8,8 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class PotensiKonflik extends Model
 {
     use HasFactory;
-    protected $table = 'potensi_konfliks'; // nama tabel
+    
+    protected $table = 'potensi_konfliks';
+    
     protected $fillable = [
+        'no',
         'nama_potensi',
         'kategori',
         'lokasi_kecamatan',
@@ -18,10 +21,24 @@ class PotensiKonflik extends Model
         'tanggal',
         'tingkat_potensi',
         'deskripsi',
-        'status',
+        'status'
     ];
 
     protected $casts = [
-        'tanggal' => 'date',        // atau 'datetime' jika ada waktu
+        'tanggal' => 'date'
     ];
+    
+    public function getTingkatColorAttribute()
+    {
+        return match($this->tingkat_potensi) {
+            'tinggi' => 'danger',
+            'sedang' => 'warning',
+            default => 'success'
+        };
+    }
+    
+    public function getStatusColorAttribute()
+    {
+        return $this->status == 'aktif' ? 'danger' : 'success';
+    }
 }

@@ -75,7 +75,7 @@
                                 <option disabled>Pilih...</option>
                                 @php
                                     $jabatanOptions = [
-                                        "Kepala Badan Kesatuan Bangsa dan Politik Kota Bandung",
+                                        "Plt. Kepala Badan Kesatuan Bangsa dan Politik Kota Bandung",
                                         "Sekertaris Badan Kesatuan Bangsa dan Politik Kota Bandung",
                                         "Kepala Sub Bagian Umum Dan Kepegawaian",
                                         "Kepala Bidang Ideologi, Wawasan Kebangsaan dan Karakter Bangsa",

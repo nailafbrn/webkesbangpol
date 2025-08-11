@@ -234,7 +234,7 @@
         };
     }
 
-    function generateLineFromSekretarisToBidangs() {
+    // function generateLineFromSekretarisToBidangs() {
         const svg = document.getElementById("connector-svg");
         const svgBox = svg.getBoundingClientRect();
         const sekretaris = document.getElementById("sekretaris-badan");
@@ -246,7 +246,7 @@
         const horizontalX = 975;
         const downToY = verticalY + 340;
 
-        // Garis utama: dari sekretaris turun → kanan → turun
+        // // Garis utama: dari sekretaris turun → kanan → turun
         const mainLinePoints = [
             `${start.x},${start.y}`,
             `${start.x},${verticalY}`,

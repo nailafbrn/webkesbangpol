@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\PotensiKonflik;
 use Illuminate\Http\Request;
 use Mews\Purifier\Facades\Purifier;
-
+use App\Imports\PotensiKonflikImport;
+use App\Http\Requests\ImportPotensiKonflikRequest;
+use Maatwebsite\Excel\Validators\ValidationException;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PotensiKonflikController extends Controller
 {
@@ -17,216 +20,7 @@ class PotensiKonflikController extends Controller
 
     public function create()
     {
-        $kecamatanKelurahan = [
-            'Andir' => [
-                'Campaka',
-                'Ciroyom',
-                'Dunguscariang',
-                'Garuda',
-                'Kebonjeruk',
-                'Maleber',
-            ],
-            'Antapani' => [
-                'Antapani Kidul',
-                'Antapani Kulon',
-                'Antapani Tengah',
-                'Antapani Wetan',
-            ],
-            'Arcamanik' => [
-                'Cisaranten Bina Harapan',
-                'Cisaranten Endah',
-                'Cisaranten Kulon',
-                'Sukamiskin',
-            ],
-            'Astanaanyar' => [
-                'Cibadak',
-                'Karanganyar',
-                'Karasak',
-                'Nyengseret',
-                'Panjunan',
-                'Pelindunghewan',
-            ],
-            'Babakan Ciparay' => [
-                'Babakan Ciparay',
-                'Cirangrang',
-                'Margahayu Utara',
-                'Margasuka',
-                'Sukahaji',
-                'Sukamulya',
-            ],
-            'Bandung Kidul' => [
-                'Cijaura',
-                'Mengger',
-                'Wates',
-            ],
-            'Bandung Kulon' => [
-                'Cijerah',
-                'Cigondewah Kaler',
-                'Cigondewah Kidul',
-                'Cigondewah Rahayu',
-                'Cigondewah Tengah',
-                'Gempolsari',
-                'Margahayu Utara',
-                'Warung Muncang',
-            ],
-            'Bandung Wetan' => [
-                'Cihapit',
-                'Citarum',
-                'Tamansari',
-            ],
-            'Batununggal' => [
-                'Cibangkong',
-                'Gumuruh',
-                'Kebonwaru',
-                'Kacapiring',
-                'Maleer',
-                'Samoja',
-            ],
-            'Bojongloa Kaler' => [
-                'Babakan Asih',
-                'Jamika',
-                'Kebonlega',
-                'Kopo',
-                'Situsaeur',
-            ],
-            'Bojongloa Kidul' => [
-                'Cibaduyut',
-                'Cibaduyut Kidul',
-                'Cibaduyut Wetan',
-                'Mekarwangi',
-                'Mulyasari',
-                'Suka Asih',
-            ],
-            'Buahbatu' => [
-                'Cijawura',
-                'Jatisari',
-                'Margasari',
-                'Sekejati',
-            ],
-            'Cibeunying Kaler' => [
-                'Cigadung',
-                'Cihaurgeulis',
-                'Neglasari',
-                'Sukaluyu',
-            ],
-            'Cibeunying Kidul' => [
-                'Cicadas',
-                'Cikutra',
-                'Padasuka',
-                'Pasirlayung',
-                'Sukamaju',
-                'Sukapada',
-            ],
-            'Cibiru' => [
-                'Cipadung',
-                'Cisurupan',
-                'Palasari',
-                'Pasirbiru',
-            ],
-            'Cicendo' => [
-                'Arjuna',
-                'Husen Sastranegara',
-                'Pajajaran',
-                'Pamoyanan',
-                'Pasirkaliki',
-                'Sukaraja',
-            ],
-            'Cidadap' => [
-                'Ciumbuleuit',
-                'Hegarmanah',
-                'Ledeng',
-            ],
-            'Cinambo' => [
-                'Babakan Penghulu',
-                'Cisaranten Wetan',
-                'Pakemitan',
-                'Sukamulya',
-            ],
-            'Coblong' => [
-                'Cipaganti',
-                'Dago',
-                'Lebakgede',
-                'Lebaksiliwangi',
-                'Sadangserang',
-                'Sekeloa',
-            ],
-            'Gedebage' => [
-                'Cimincrang',
-                'Cisaranten Kidul',
-                'Rancabolang',
-                'Rancanumpang',
-            ],
-            'Kiaracondong' => [
-                'Babakansari',
-                'Babakansurabaya',
-                'Cicaheum',
-                'Kebonkangkung',
-                'Kebunjayanti',
-                'Sukapura',
-            ],
-            'Lengkong' => [
-                'Burangrang',
-                'Cijagra',
-                'Cikawao',
-                'Lingkar Selatan',
-                'Malabar',
-                'Paledang',
-                'Turangga',
-            ],
-            'Mandalajati' => [
-                'Jatihandap',
-                'Karangpamulang',
-                'Pasir Impun',
-                'Sindangjaya',
-            ],
-            'Panyileukan' => [
-                'Cipadung Kidul',
-                'Cipadung Kulon',
-                'Cipadung Wetan',
-                'Mekarmulya',
-            ],
-            'Rancasari' => [
-                'Cipamokolan',
-                'Darwati',
-                'Manjahlega',
-                'Mekarjaya',
-            ],
-            'Regol' => [
-                'Ancol',
-                'Balonggede',
-                'Ciateul',
-                'Cigereleng',
-                'Ciseureuh',
-                'Pasirluyu',
-                'Pungkur',
-            ],
-            'Sukajadi' => [
-                'Cipedes',
-                'Pasteur',
-                'Sukabungah',
-                'Sukagalih',
-                'Sukawarna',
-            ],
-            'Sukasari' => [
-                'Gegerkalong',
-                'Isola',
-                'Sarijadi',
-                'Sukarasa',
-            ],
-            'Sumur Bandung' => [
-                'Babakanciamis',
-                'Braga',
-                'Kebonpisang',
-                'Merdeka',
-            ],
-            'Ujungberung' => [
-                'Cigending',
-                'Pasanggrahan',
-                'Pasirendah',
-                'Pasirjati',
-                'Pasirwangi',
-            ],
-        ];
+        $kecamatanKelurahan = $this->getKecamatanKelurahan();
         return view('dashboard.potensi_konflik.create', compact('kecamatanKelurahan'));
     }
 
@@ -256,7 +50,7 @@ class PotensiKonflikController extends Controller
             'status' => $request->status,
         ]);
 
-        return redirect()->route('potensi-konflik.index')->with('success', 'Data potensi konflik berhasil ditambahkan.');
+        return redirect()->route('potensi-konflik.index')->with('success', 'Data berhasil ditambahkan.');
     }
 
     public function show($id)
@@ -268,216 +62,7 @@ class PotensiKonflikController extends Controller
     public function edit($id)
     {
         $potensiKonflik = PotensiKonflik::findOrFail($id);
-        $kecamatanKelurahan = [
-            'Andir' => [
-                'Campaka',
-                'Ciroyom',
-                'Dunguscariang',
-                'Garuda',
-                'Kebonjeruk',
-                'Maleber',
-            ],
-            'Antapani' => [
-                'Antapani Kidul',
-                'Antapani Kulon',
-                'Antapani Tengah',
-                'Antapani Wetan',
-            ],
-            'Arcamanik' => [
-                'Cisaranten Bina Harapan',
-                'Cisaranten Endah',
-                'Cisaranten Kulon',
-                'Sukamiskin',
-            ],
-            'Astanaanyar' => [
-                'Cibadak',
-                'Karanganyar',
-                'Karasak',
-                'Nyengseret',
-                'Panjunan',
-                'Pelindunghewan',
-            ],
-            'Babakan Ciparay' => [
-                'Babakan Ciparay',
-                'Cirangrang',
-                'Margahayu Utara',
-                'Margasuka',
-                'Sukahaji',
-                'Sukamulya',
-            ],
-            'Bandung Kidul' => [
-                'Cijaura',
-                'Mengger',
-                'Wates',
-            ],
-            'Bandung Kulon' => [
-                'Cijerah',
-                'Cigondewah Kaler',
-                'Cigondewah Kidul',
-                'Cigondewah Rahayu',
-                'Cigondewah Tengah',
-                'Gempolsari',
-                'Margahayu Utara',
-                'Warung Muncang',
-            ],
-            'Bandung Wetan' => [
-                'Cihapit',
-                'Citarum',
-                'Tamansari',
-            ],
-            'Batununggal' => [
-                'Cibangkong',
-                'Gumuruh',
-                'Kebonwaru',
-                'Kacapiring',
-                'Maleer',
-                'Samoja',
-            ],
-            'Bojongloa Kaler' => [
-                'Babakan Asih',
-                'Jamika',
-                'Kebonlega',
-                'Kopo',
-                'Situsaeur',
-            ],
-            'Bojongloa Kidul' => [
-                'Cibaduyut',
-                'Cibaduyut Kidul',
-                'Cibaduyut Wetan',
-                'Mekarwangi',
-                'Mulyasari',
-                'Suka Asih',
-            ],
-            'Buahbatu' => [
-                'Cijawura',
-                'Jatisari',
-                'Margasari',
-                'Sekejati',
-            ],
-            'Cibeunying Kaler' => [
-                'Cigadung',
-                'Cihaurgeulis',
-                'Neglasari',
-                'Sukaluyu',
-            ],
-            'Cibeunying Kidul' => [
-                'Cicadas',
-                'Cikutra',
-                'Padasuka',
-                'Pasirlayung',
-                'Sukamaju',
-                'Sukapada',
-            ],
-            'Cibiru' => [
-                'Cipadung',
-                'Cisurupan',
-                'Palasari',
-                'Pasirbiru',
-            ],
-            'Cicendo' => [
-                'Arjuna',
-                'Husen Sastranegara',
-                'Pajajaran',
-                'Pamoyanan',
-                'Pasirkaliki',
-                'Sukaraja',
-            ],
-            'Cidadap' => [
-                'Ciumbuleuit',
-                'Hegarmanah',
-                'Ledeng',
-            ],
-            'Cinambo' => [
-                'Babakan Penghulu',
-                'Cisaranten Wetan',
-                'Pakemitan',
-                'Sukamulya',
-            ],
-            'Coblong' => [
-                'Cipaganti',
-                'Dago',
-                'Lebakgede',
-                'Lebaksiliwangi',
-                'Sadangserang',
-                'Sekeloa',
-            ],
-            'Gedebage' => [
-                'Cimincrang',
-                'Cisaranten Kidul',
-                'Rancabolang',
-                'Rancanumpang',
-            ],
-            'Kiaracondong' => [
-                'Babakansari',
-                'Babakansurabaya',
-                'Cicaheum',
-                'Kebonkangkung',
-                'Kebunjayanti',
-                'Sukapura',
-            ],
-            'Lengkong' => [
-                'Burangrang',
-                'Cijagra',
-                'Cikawao',
-                'Lingkar Selatan',
-                'Malabar',
-                'Paledang',
-                'Turangga',
-            ],
-            'Mandalajati' => [
-                'Jatihandap',
-                'Karangpamulang',
-                'Pasir Impun',
-                'Sindangjaya',
-            ],
-            'Panyileukan' => [
-                'Cipadung Kidul',
-                'Cipadung Kulon',
-                'Cipadung Wetan',
-                'Mekarmulya',
-            ],
-            'Rancasari' => [
-                'Cipamokolan',
-                'Darwati',
-                'Manjahlega',
-                'Mekarjaya',
-            ],
-            'Regol' => [
-                'Ancol',
-                'Balonggede',
-                'Ciateul',
-                'Cigereleng',
-                'Ciseureuh',
-                'Pasirluyu',
-                'Pungkur',
-            ],
-            'Sukajadi' => [
-                'Cipedes',
-                'Pasteur',
-                'Sukabungah',
-                'Sukagalih',
-                'Sukawarna',
-            ],
-            'Sukasari' => [
-                'Gegerkalong',
-                'Isola',
-                'Sarijadi',
-                'Sukarasa',
-            ],
-            'Sumur Bandung' => [
-                'Babakanciamis',
-                'Braga',
-                'Kebonpisang',
-                'Merdeka',
-            ],
-            'Ujungberung' => [
-                'Cigending',
-                'Pasanggrahan',
-                'Pasirendah',
-                'Pasirjati',
-                'Pasirwangi',
-            ],
-        ];
+        $kecamatanKelurahan = $this->getKecamatanKelurahan();
         return view('dashboard.potensi_konflik.edit', compact('potensiKonflik', 'kecamatanKelurahan'));
     }
 
@@ -508,7 +93,7 @@ class PotensiKonflikController extends Controller
             'status' => $request->status,
         ]);
 
-        return redirect()->route('potensi-konflik.index')->with('success', 'Data potensi konflik berhasil diperbarui.');
+        return redirect()->route('potensi-konflik.index')->with('success', 'Data berhasil diperbarui.');
     }
 
     public function destroy($id)
@@ -516,6 +101,43 @@ class PotensiKonflikController extends Controller
         $potensiKonflik = PotensiKonflik::findOrFail($id);
         $potensiKonflik->delete();
 
-        return redirect()->route('potensi-konflik.index')->with('success', 'Data potensi konflik berhasil dihapus.');
+        return redirect()->route('potensi-konflik.index')->with('success', 'Data berhasil dihapus.');
+    }
+
+    public function showImportForm()
+    {
+        return view('dashboard.potensi_konflik.import');
+    }
+
+    public function import(ImportPotensiKonflikRequest $request)
+    {
+        try {
+            Excel::import(new PotensiKonflikImport, $request->file('file'));
+            return redirect()->route('potensi-konflik.index')
+                ->with('success', 'Data berhasil diimpor dari Excel');
+        } catch (ValidationException $e) { // Tangkap ValidationException
+            $failures = $e->failures();
+            $errorMessages = [];
+            foreach ($failures as $failure) {
+                $row = $failure->row(); // Baris di Excel
+                $attribute = $failure->attribute(); // Kolom yang error
+                $errors = implode(', ', $failure->errors()); // Pesan error
+                $errorMessages[] = "Baris {$row}, Kolom '{$attribute}': {$errors}";
+            }
+            return redirect()->back()
+                ->with('error', 'Terjadi kesalahan validasi saat impor:<br>' . implode('<br>', $errorMessages));
+        } catch (\Exception $e) { // Tangkap exception umum lainnya
+            return redirect()->back()
+                ->with('error', 'Terjadi kesalahan saat impor: ' . $e->getMessage());
+        }
+    }
+
+    private function getKecamatanKelurahan()
+    {
+        return [
+            'Andir' => ['Campaka', 'Ciroyom', 'Dunguscariang', 'Garuda', 'Kebonjeruk', 'Maleber'],
+            'Antapani' => ['Antapani Kidul', 'Antapani Kulon', 'Antapani Tengah', 'Antapani Wetan'],
+            // Tambah kecamatan lainnya sesuai kebutuhan
+        ];
     }
 }

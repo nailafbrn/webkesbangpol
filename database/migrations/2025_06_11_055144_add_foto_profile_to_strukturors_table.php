@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('strukturors', function (Blueprint $table) {
-            $table->string('foto_profile')->nullable()->after('pangkat');
-        });
+        // Tambahkan kolom hanya jika belum ada
+        if (!Schema::hasColumn('strukturors', 'foto_profile')) {
+            Schema::table('strukturors', function (Blueprint $table) {
+                $table->string('foto_profile')->nullable()->after('pangkat');
+            });
+        }
     }
 
     /**
@@ -21,8 +24,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('strukturors', function (Blueprint $table) {
-            $table->dropColumn('foto_profile');
-        });
+        // Hapus kolom hanya jika sudah ada
+        if (Schema::hasColumn('strukturors', 'foto_profile')) {
+            Schema::table('strukturors', function (Blueprint $table) {
+                $table->dropColumn('foto_profile');
+            });
+        }
     }
 };

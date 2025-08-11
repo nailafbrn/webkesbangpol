@@ -97,20 +97,12 @@
                                         <div class="document-title">{{ $ukurkerja->title }}</div>
                                     </td>
                                     <td class="table-cell-actions">
-                                        <div class="action-buttons">
-                                            <button type="button" class="btn btn-preview preview-btn" 
-                                                    data-bs-toggle="modal" 
-                                                    data-bs-target="#previewModal" 
-                                                    data-file="{{ basename($ukurkerja->file_upload) }}" 
-                                                    data-download-url="{{ asset($ukurkerja->file_upload_wm) }}"
-                                                    data-title="{{ $ukurkerja->title }}">
-                                                <i class="fas fa-eye"></i>
-                                                <span class="btn-text">Preview</span>
-                                            </button>
-                                            <a href="{{ asset($ukurkerja->file_upload_wm) }}" class="btn btn-download" download>
-                                                <i class="fas fa-download"></i>
-                                                <span class="btn-text">Unduh</span>
-                                            </a>
+                                        <a href="{{ asset($ukurkerja->file_upload) }}" target="_blank" class="btn btn-preview">
+    <i class="fas fa-eye"></i> Preview
+</a>
+<a href="{{ asset($ukurkerja->file_upload_wm) }}" class="btn btn-download" download>
+    <i class="fas fa-download"></i> Unduh
+</a>
                                         </div>
                                     </td>
                                 </tr>

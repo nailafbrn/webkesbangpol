@@ -42,7 +42,7 @@
                 @endphp
                 
                 <div id="kepala-badan" class="box">
-                    @php $kepala = getByJabatan($strukturors, 'Kepala Badan Kesatuan Bangsa dan Politik Kota Bandung'); @endphp
+                    @php $kepala = getByJabatan($strukturors, 'Plt. Kepala Badan Kesatuan Bangsa dan Politik Kota Bandung'); @endphp
                     <div class="box-content">
                         <div class="box-fotoprofile">
                             <img src="{{ optional($kepala)->foto_profile ? asset('images/struktur-organisasi/' . $kepala->foto_profile) : asset('images/component/profile1.webp') }}" alt="Profile Photo">
@@ -56,7 +56,7 @@
                     </div>
                 </div>
                                 
-                <div id="sekretaris-badan" class="box">
+                <!-- <div id="sekretaris-badan" class="box">
                     @php $sekretaris = getByJabatan($strukturors, 'Sekertaris Badan Kesatuan Bangsa dan Politik Kota Bandung'); @endphp
                     <div class="box-content">
                         <div class="box-fotoprofile" style="border: 5px solid #0d6efd;">
@@ -69,7 +69,7 @@
                             <div class="box-nip">NIP. {{ $sekretaris->formatted_nip ?? '' }} /{{ $sekretaris->golongan ?? '' }} {{ $sekretaris->pangkat ?? '' }}</div>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <div id="kelompok-fungsional1" class="box" style="font-weight: bold;">KELOMPOK JABATAN FUNGSIONAL</div>
                                 
@@ -248,10 +248,11 @@
         document.addEventListener('DOMContentLoaded', () => {
             // positionJabatan();
 
-            generatePolylineFromKepalaToSekretaris('kepala-badan', 'sekretaris-badan');
+            // generatePolylineFromKepalaToSekretaris('kepala-badan', 'sekretaris-badan');
             generatePolylineToKelompokFungsional();
             generatePolylinePath('sekretaris-badan', 'subbag-umum');
-            generatePolylinePath('sekretaris-badan', 'kelompok-fungsional2');
+            generatePolylinePath('subbag-umum', 'kelompok-fungsional2');
+            // generatePolylinePath('sekretaris-badan', 'kelompok-fungsional2');
             
             generatePolylinePath('bidang-1', 'kelompok-fungsional3');
 

@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('potensi_konfliks', function (Blueprint $table) {
-            $table->string('alamat')->nullable()->after('lokasi_kelurahan');
-        });
+        // Tambahkan kolom hanya jika belum ada
+        if (!Schema::hasColumn('potensi_konfliks', 'alamat')) {
+            Schema::table('potensi_konfliks', function (Blueprint $table) {
+                $table->string('alamat')->nullable()->after('lokasi_kelurahan');
+            });
+        }
     }
 
     /**
@@ -21,8 +24,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('potensi_konfliks', function (Blueprint $table) {
-            $table->dropColumn('alamat');
-        });
+        // Hapus kolom hanya jika ada
+        if (Schema::hasColumn('potensi_konfliks', 'alamat')) {
+            Schema::table('potensi_konfliks', function (Blueprint $table) {
+                $table->dropColumn('alamat');
+            });
+        }
     }
 };

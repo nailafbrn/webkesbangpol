@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
+        // Mengubah tipe kolom menjadi TEXT agar bisa menampung data panjang
         Schema::table('visi_misis', function (Blueprint $table) {
-            $table->text('visi')->nullable()->change();
-            $table->text('misi')->nullable()->change();
+            $table->text('visi')->change();
+            $table->text('misi')->change();
         });
     }
 
@@ -23,10 +23,12 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        // PERBAIKAN: Saat proses 'down', kita ubah kembali menjadi TEXT juga.
+        // Ini untuk mencegah error "Data too long" jika ada data yang sudah terlanjur panjang.
+        // Ini adalah cara paling aman untuk memastikan migrasi bisa dibatalkan tanpa error.
         Schema::table('visi_misis', function (Blueprint $table) {
-            $table->string('visi')->nullable()->change();
-            $table->string('misi')->nullable()->change();
+            $table->text('visi')->change();
+            $table->text('misi')->change();
         });
     }
 };

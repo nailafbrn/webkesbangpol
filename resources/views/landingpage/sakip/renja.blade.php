@@ -98,19 +98,17 @@
                                     </td>
                                     <td class="table-cell-actions">
                                         <div class="action-buttons">
-                                            <button type="button" class="btn btn-preview preview-btn" 
-                                                    data-bs-toggle="modal" 
-                                                    data-bs-target="#previewModal" 
-                                                    data-file="{{ basename($renja->file_upload) }}" 
-                                                    data-download-url="{{ asset($renja->file_upload_wm) }}"
-                                                    data-title="{{ $renja->title }}">
-                                                <i class="fas fa-eye"></i>
-                                                <span class="btn-text">Preview</span>
-                                            </button>
-                                            <a href="{{ asset($renja->file_upload_wm) }}" class="btn btn-download" download>
-                                                <i class="fas fa-download"></i>
-                                                <span class="btn-text">Unduh</span>
-                                            </a>
+                                            {{-- Tombol Preview yang BENAR untuk file di dalam folder public --}}
+<a href="{{ asset($renja->file_upload) }}" target="_blank" class="btn btn-preview">
+    <i class="fas fa-eye"></i>
+    <span class="btn-text">Preview</span>
+</a>
+
+{{-- Tombol Unduh yang BENAR untuk file di dalam folder public --}}
+<a href="{{ asset($renja->file_upload_wm) }}" class="btn btn-download" download>
+    <i class="fas fa-download"></i>
+    <span class="btn-text">Unduh</span>
+</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -1123,7 +1121,7 @@
                     errorDiv.style.display = 'none';
                     
                     // Fetch dokumen sebagai base64
-                    const response = await fetch(`/serve-document-renja/${encodeURIComponent(filename)}`);
+                    const response = await fetch(`/serve-content-renja/${encodeURIComponent(filename)}`);
                     if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);
                     }
@@ -1202,7 +1200,7 @@
                             
                             pdfContainer.innerHTML = `
                                 <div class="text-center p-5">
-                                    <div class="alert alert-warning">
+                                    <div class="alerxt alert-warning">
                                         <p><i class="fas fa-exclamation-triangle"></i> Tidak dapat menampilkan preview PDF secara langsung.</p>
                                         <p>Hal ini bisa disebabkan oleh pengaturan browser atau ekstensi seperti AdBlock.</p>
                                         <a href="/file-content-renja/${encodeURIComponent(filename)}" class="btn btn-primary" download="${filename}">
