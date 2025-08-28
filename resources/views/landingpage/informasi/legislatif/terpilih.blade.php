@@ -1,4 +1,4 @@
-@extends('landingpage.layouts.app')
+<!-- @extends('landingpage.layouts.app')
 @section('title', 'Calon Legislatif Terpilih')
 
 @section('content')
@@ -109,4 +109,4 @@
         </div>
     </div>
 </section>
-@endsection
+@endsection -->

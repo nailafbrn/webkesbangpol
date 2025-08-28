@@ -108,15 +108,6 @@
                 </select>
             </div>
             
-            {{-- PERBAIKAN: Menambahkan route ke tombol --}}
-            <div class="col-md-6 text-center text-md-end">
-                <a href="{{ route('pemilu.legislatif.terpilih') }}" class="btn btn-success">
-                    <i class="fas fa-award me-2"></i>Lihat Caleg Terpilih
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
 
 
 <section class="py-5 bg-light">

@@ -7,7 +7,6 @@
     <div class="row mb-4">
         <div class="col-12">
             <div>
-                {{-- This route name should exist in your routes file --}}
                 <a href="{{ route('admin.pemilu-raya.dashboard') }}" class="btn btn-secondary mb-2">
                     <i class="fas fa-arrow-left me-1"></i> Kembali ke Dashboard Pemilu
                 </a>
@@ -28,22 +27,9 @@
                     <a href="{{ route('admin.pemilu.legislatif.import.form') }}" class="btn btn-primary">
                         <i class="fas fa-file-excel"></i> <span>Import Excel</span>
                     </a>
-                    
-                    <!-- {{-- PERUBAHAN: Menambahkan tombol untuk ke halaman Caleg Terpilih --}}
-                    <a href="{{ route('admin.pemilu.legislatif-terpilih.index') }}" class="btn btn-info">
-                        <i class="fas fa-award"></i> <span>Manajemen Terpilih</span>
-                    </a>
-                </div> -->
-                {{-- PERUBAHAN: Menambahkan tombol untuk ke halaman Caleg Terpilih --}}
-                <a href="{{ route('legislatif.terpilih') }}" class="btn btn-success">
-                <i class="fas fa-award"></i> <span>Lihat Caleg Terpilih</span>
-</a>
+                </div>
 
-                <!-- Search Form -->{{-- PERUBAHAN: Menambahkan tombol untuk ke halaman Caleg Terpilih --}}
-            <a href="{{ route('legislatif.terpilih') }}" class="btn btn-success">
-            <i class="fas fa-award"></i> <span>Lihat Caleg Terpilih</span>
-</a>
-
+                {{-- Search Form --}}
                 <div class="search-container">
                     <form method="GET" action="{{ route('admin.pemilu.legislatif.index') }}" class="d-flex">
                         <div class="input-group" style="width: 350px;">
@@ -68,7 +54,7 @@
                 </div>
             @endif
             @if(session('error'))
-                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     {{ session('error') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
@@ -81,7 +67,7 @@
                         <tr>
                             <th>NAMA LENGKAP</th>
                             <th>PARTAI</th>
-                            <th>DAPIL</th>
+                            <th class="text-center">DAPIL</th>
                             <th class="text-center">NO URUT</th>
                             <th class="text-center">TOTAL SUARA</th>
                             <th class="text-center">AKSI</th>

@@ -89,11 +89,11 @@ class LegislatifController extends Controller
         return redirect()->route('admin.pemilu.legislatif.index')->with('success', 'Semua data calon legislatif berhasil dihapus.');
     }
 
-    public function terpilih()
-    {
-        $calegTerpilih = Legislatif::where('status', 'terpilih')->get();
-        return view('dashboard.pemilu_raya.legislatif.terpilih', compact('calegTerpilih'));
-    }
+    // public function terpilih()
+    // {
+    //     $calegTerpilih = Legislatif::where('status', 'terpilih')->get();
+    //     return view('dashboard.pemilu_raya.legislatif.terpilih', compact('calegTerpilih'));
+    // }
 
     public function showImportForm()
     {
@@ -110,11 +110,6 @@ class LegislatifController extends Controller
         ]);
 
         try {
-            // =================================================================
-            // == PERBAIKAN UTAMA ADA DI SINI ==
-            // =================================================================
-            // Logika disederhanakan karena WithUpserts menangani semuanya.
-            // Kita tidak perlu lagi menghitung data yang sukses atau gagal.
             Excel::import(new LegislatifSheetImport, $request->file('file'));
 
             return redirect()->route('admin.pemilu.legislatif.index')->with('success', "Data calon legislatif berhasil diimpor/diperbarui.");

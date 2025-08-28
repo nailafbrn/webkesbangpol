@@ -42,7 +42,7 @@ use App\Http\Controllers\WalikotaController;
 
 // Newly added controller for Legislatif
 use App\Http\Controllers\LegislatifController;
-use App\Http\Controllers\LegislatifTerpilihController;
+// use App\Http\Controllers\LegislatifTerpilihController;
 // Placeholder for Legislatif Terpilih Controller
 // use App\Http\Controllers\LegislatifTerpilihController;
 
@@ -106,7 +106,7 @@ Route::get('/mitra/detail/{mitra}', [LandingpageController::class, 'showMitraDet
 Route::get('/pemilu', [ElectionController::class, 'index'])->name('pemilu.index');
 Route::get('/pemilu/{kategori}', [ElectionController::class, 'show'])->name('pemilu.show');
 Route::get('/pemilu/{kategori}/{id}', [ElectionController::class, 'detail'])->name('pemilu.detail');
-Route::get('/pemilu/legislatif/terpilih', [ElectionController::class, 'showLegislatifTerpilih'])->name('pemilu.legislatif.terpilih');
+// Route::get('/pemilu/legislatif/terpilih', [ElectionController::class, 'showLegislatifTerpilih'])->name('pemilu.legislatif.terpilih');
 Route::get('/pemilu/{kategori}', [ElectionController::class, 'show'])->name('pemilu.show');
 Route::get('/pemilu/{kategori}/{id}', [ElectionController::class, 'detail'])->name('pemilu.detail');
 
@@ -169,12 +169,12 @@ Route::middleware(['auth'])->group(function () {
         Route::post('legislatif/import', [LegislatifController::class, 'import'])->name('legislatif.import');
         Route::resource('legislatif', LegislatifController::class);
         
-        // Legislatif Terpilih Routes
-        Route::get('/pemilu/legislatif/terpilih', [LegislatifController::class, 'terpilih'])
-        ->name('pemilu.legislatif.terpilih');
+        // // Legislatif Terpilih Routes
+        // Route::get('/pemilu/legislatif/terpilih', [LegislatifController::class, 'terpilih'])
+        // ->name('pemilu.legislatif.terpilih');
 
-        // Resource untuk legislatif terpilih (jika butuh CRUD penuh)
-        Route::resource('/legislatif-terpilih', LegislatifTerpilihController::class);
+        // // Resource untuk legislatif terpilih (jika butuh CRUD penuh)
+        // Route::resource('/legislatif-terpilih', LegislatifTerpilihController::class);
 
         // Resource untuk legislatif biasa
         Route::resource('/legislatif', LegislatifController::class);
